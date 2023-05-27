@@ -22,6 +22,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Button)
     btnRight: cc.Button = null;
 
+    @property(cc.Button)
+    shopBtn: cc.Button = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -30,6 +33,7 @@ export default class NewClass extends cc.Component {
     start () {
         this.btnLeft.node.on('click', this.leftShip, this);
         this.btnRight.node.on('click', this.rightShip, this);
+        this.shopBtn.node.on('click', this.openShop, this);
         this.updateShipDisplay();
     }
 
@@ -65,5 +69,9 @@ export default class NewClass extends cc.Component {
         this.renderShipSprite.node.stopAllActions();
         this.renderShipSprite.node.opacity = 0; // Set initial opacity to 0
         this.renderShipSprite.node.runAction(cc.sequence(fadeOut, cc.delayTime(0.1), fadeIn));
+    }
+
+    openShop(){
+        cc.director.loadScene("Shop");
     }
 }

@@ -2747,6 +2747,9 @@
     "btnRight": {
       "__id__": 19
     },
+    "shopBtn": {
+      "__id__": 47
+    },
     "_id": "306FHuj7RMLJvawHueGLSN"
   }
 ]
