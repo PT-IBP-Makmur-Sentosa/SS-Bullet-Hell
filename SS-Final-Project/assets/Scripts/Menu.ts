@@ -99,8 +99,10 @@ export default class Menu extends cc.Component {
             const db = firebase.database();
             const userRef = db.ref('users/' + userCredential.user?.uid);
             userRef.set({
-              life: 5,
+              coins: 0,
               score: 0,
+              selectedShipIndex: 0,
+              shipUnLocked: [true, false, false, false, false],
               name: this.signupUsername.string,
             });
             this.signupSprite.node.active = false;

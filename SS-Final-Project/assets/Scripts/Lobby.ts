@@ -4,7 +4,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
+declare const firebase: any;
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -27,9 +27,22 @@ export default class NewClass extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    
     private currentShipIndex: number = 0;
+    async onLoad () {
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref('users/' + user?.uid);
+        userRef.once('value', (snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            this.currentShipIndex = userData.selectedShipIndex;
+          } else {
+            console.log("User not found");
+          }
+        });
 
+    }
     start () {
         this.btnLeft.node.on('click', this.leftShip, this);
         this.btnRight.node.on('click', this.rightShip, this);
