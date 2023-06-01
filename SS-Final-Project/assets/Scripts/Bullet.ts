@@ -29,11 +29,11 @@ export default class Bullet extends cc.Component {
     this.node.parent = node.parent; // don't mount under the player, otherwise it will change direction when player move
 
     if (node.scaleX > 0) {
-      this.node.position = cc.v2(62, 8);
+      this.node.position = cc.v3(62, 8);
 
       this.node.scaleX = 1;
     } else {
-      this.node.position = cc.v2(-62, 8);
+      this.node.position = cc.v3(-62, 8);
 
       this.node.scaleX = -1;
     }
@@ -60,7 +60,7 @@ export default class Bullet extends cc.Component {
   }
 
   //detect collision with enemies
-  onBeginContact(contact, selfCollider, otherCollider) {
+  onBeginContact(contact, self, other) {
     console.log("contact");
     this.node.stopAllActions();
 
