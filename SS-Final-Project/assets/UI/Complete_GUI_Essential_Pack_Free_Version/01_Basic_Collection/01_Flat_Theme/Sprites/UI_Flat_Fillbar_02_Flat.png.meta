@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "de067c3a-5a35-405d-b690-64ad87684454",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 32,
+  "height": 32,
+  "platformSettings": {},
+  "subMetas": {
+    "UI_Flat_Fillbar_02_Flat": {
+      "ver": "1.0.6",
+      "uuid": "afab967f-383c-4586-951e-10ac2d6a3fce",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "de067c3a-5a35-405d-b690-64ad87684454",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 10,
+      "width": 32,
+      "height": 12,
+      "rawWidth": 32,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
