@@ -11,6 +11,8 @@ export default class Enemy extends cc.Component {
   @property({ type: cc.Node })
   private playerNode: cc.Node = null;
 
+  
+
   private enemyPool: cc.NodePool = null;
   private isAlive: boolean = false;
   private speed: number = 200;
@@ -20,11 +22,12 @@ export default class Enemy extends cc.Component {
   private moveScheduler: number = null;
   private previousPlayerPosition: cc.Vec3 = null;
   private shootScheduleIdCounter: number = 0;
+  private enemyHP: number = 9; // Add enemy HP property
 
   onLoad() {
     this.isAlive = false;
     this.speed = 500; // Adjust the speed of the enemy's movement
-    this.shootInterval = 2; // Adjust the time interval between shots
+    this.shootInterval = 0.5; // Adjust the time interval between shots
 
     this.enemyPool = new cc.NodePool();
     const initialEnemyCount = 10;
@@ -203,4 +206,18 @@ scheduleShoot(enemy): void {
   //   bullet.runAction(cc.sequence(moveAction, removeAction));
   //   this.node.parent.addChild(bullet);
   // }
+
+
+  handleBulletCollision(bullet: cc.Node, enemy: cc.Node): void {
+    this.enemyHP--; // Decrease enemy HP when hit by a bullet
+
+    if (this.enemyHP <= 0) {
+      // Enemy destroyed when HP reaches 0
+      enemy.removeFromParent();
+      this.enemyPool.put(enemy);
+    }
+
+    bullet.removeFromParent();
+  }
 }
+
