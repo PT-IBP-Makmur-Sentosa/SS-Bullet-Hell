@@ -23,7 +23,7 @@ export default class Player extends cc.Component {
   private aDown: boolean = false;
   private sDown: boolean = false;
   private dDown: boolean = false;
-  private playerSpeedX: number = 300;
+  private playerSpeed: number = 150;
   private isDead: boolean = false;
   private isReborn: boolean = false;
   private rebornTime: number = 1;
@@ -94,23 +94,18 @@ export default class Player extends cc.Component {
   }
 
   playerMovement(dt): void {
-    // initial speed
-    this.playerSpeedX = 0;
-
     // the player move horizontally left
     if (this.aDown) {
-      this.playerSpeedX = -300;
+      this.node.x -= this.playerSpeed * dt;
     } else if (this.dDown) {
-      this.playerSpeedX = 300;
+      this.node.x += this.playerSpeed * dt;
     }
-    // move the player horizontally
-    this.node.x += this.playerSpeedX * dt;
 
     // the player move vertically
     if (this.wDown) {
-      this.node.y += 300 * dt;
+      this.node.y += this.playerSpeed * dt;
     } else if (this.sDown) {
-      this.node.y -= 300 * dt;
+      this.node.y -= this.playerSpeed * dt;
     }
 
     // set the boundary of the player
@@ -144,7 +139,7 @@ export default class Player extends cc.Component {
 
   playerAnimation(): void {
     if (this.spaceDown) {
-      this.schedule(this.createBullet, 0.2);
+      this.schedule(this.createBullet, 0.3);
       this.animateState = this.anim.play("shoot");
     }
   }
