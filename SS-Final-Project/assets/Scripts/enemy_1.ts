@@ -92,7 +92,7 @@ export default class Enemy extends cc.Component {
       }, delay);
     };
   
-    // spawnEnemy();
+    spawnEnemy();
   }
   
 
