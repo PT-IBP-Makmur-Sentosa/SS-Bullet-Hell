@@ -19,6 +19,7 @@ export default class Enemy extends cc.Component {
   private shootScheduler: number = null;
   private moveScheduler: number = null;
   private previousPlayerPosition: cc.Vec3 = null;
+  private shootScheduleIdCounter: number = 0;
 
   onLoad() {
     this.isAlive = false;
@@ -144,29 +145,23 @@ export default class Enemy extends cc.Component {
   }
   
 
-  unscheduleRespawn(): void {
-    // Stop the enemy respawn scheduler
-    cc.director.getScheduler().unschedule(this.respawnScheduler, this);
-  }
 
-  scheduleShoot(enemy): void {
-    // Schedule bullet shooting with a delay equal to shootInterval
-    this.shootScheduler = cc.director.getScheduler().schedule(
-      () => {
-        // this.shootTowardsPlayer();
-        this.shootTowardsLeft(enemy);
-      },
-      this,
-      this.shootInterval,
-      false // Set the repeat parameter to false for no repeat
-    );
-  }
+scheduleShoot(enemy): void {
+  // Schedule bullet shooting with a delay equal to shootInterval
+  this.shootScheduler = ++this.shootScheduleIdCounter;
+  cc.director.getScheduler().schedule(
+    () => {
+      this.shootTowardsLeft(enemy);
+    },
+    this,
+    this.shootInterval,
+    0,
+    0,
+    false
+  );
+}
+
   
-
-  unscheduleShoot(): void {
-    cc.director.getScheduler().unschedule(this.shootScheduler, this);
-  }
-
 
   shootTowardsLeft(enemy): void {
     const bullet = cc.instantiate(this.bulletPrefab);
@@ -181,6 +176,7 @@ export default class Enemy extends cc.Component {
     const duration = distance / bulletSpeed;
     const moveAction = cc.moveTo(duration, bulletEndPosition);
     const removeAction = cc.removeSelf(true);
+
     bullet.runAction(cc.sequence(moveAction, removeAction));
   
     this.node.parent.addChild(bullet);
