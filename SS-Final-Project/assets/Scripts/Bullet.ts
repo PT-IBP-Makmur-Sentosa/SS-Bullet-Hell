@@ -46,7 +46,7 @@ export default class Bullet extends cc.Component {
     let moveDir = null;
 
     // move bullet to 500 far from current position in 0.8s
-    if (this.node.scaleX > 0) moveDir = cc.moveBy(0.8, 300, 0);
+    if (this.node.scaleX > 0) moveDir = cc.moveBy(4, 960, 0);
     else moveDir = cc.moveBy(0.8, -300, 0);
 
     let finished = cc.callFunc(() => {
