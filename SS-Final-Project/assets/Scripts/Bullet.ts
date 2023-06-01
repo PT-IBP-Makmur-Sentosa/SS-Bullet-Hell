@@ -61,6 +61,7 @@ export default class Bullet extends cc.Component {
 
   //detect collision with enemies
   onBeginContact(contact, selfCollider, otherCollider) {
+    console.log("contact");
     this.node.stopAllActions();
 
     this.unscheduleAllCallbacks();
