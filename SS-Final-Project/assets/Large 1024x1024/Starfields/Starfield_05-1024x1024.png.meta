@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "75020c21-eeba-4a6c-a3af-5e664b4e6341",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1024,
+  "height": 1024,
+  "platformSettings": {},
+  "subMetas": {
+    "Starfield_05-1024x1024": {
+      "ver": "1.0.6",
+      "uuid": "5b054151-6593-4ae4-8543-2d7fd5b54b82",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "75020c21-eeba-4a6c-a3af-5e664b4e6341",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1024,
+      "height": 1024,
+      "rawWidth": 1024,
+      "rawHeight": 1024,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "3e57dbb2-fe82-4b74-958d-2e2e6366f6d6",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 272,
+  "height": 160,
+  "platformSettings": {},
+  "subMetas": {
+    "parallax-space-far-planets": {
+      "ver": "1.0.6",
+      "uuid": "fa3251b9-3803-48f4-8b41-a68d45dcf8d7",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "3e57dbb2-fe82-4b74-958d-2e2e6366f6d6",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 8,
+      "offsetY": 37.5,
+      "trimX": 44,
+      "trimY": 7,
+      "width": 200,
+      "height": 71,
+      "rawWidth": 272,
+      "rawHeight": 160,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

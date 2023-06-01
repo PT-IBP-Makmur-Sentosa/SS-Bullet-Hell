@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "a18d03f7-a3ab-4f31-9f28-cbbc98923d2e",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1024,
+  "height": 1024,
+  "platformSettings": {},
+  "subMetas": {
+    "Blue_Nebula_03-1024x1024": {
+      "ver": "1.0.6",
+      "uuid": "0435c8c6-3104-4a81-a255-8c2f834162b8",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "a18d03f7-a3ab-4f31-9f28-cbbc98923d2e",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1024,
+      "height": 1024,
+      "rawWidth": 1024,
+      "rawHeight": 1024,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
