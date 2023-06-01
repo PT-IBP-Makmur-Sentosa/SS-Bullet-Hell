@@ -11,8 +11,6 @@ export default class Enemy extends cc.Component {
   @property({ type: cc.Node })
   private playerNode: cc.Node = null;
 
-  
-
   private enemyPool: cc.NodePool = null;
   private isAlive: boolean = false;
   private speed: number = 200;
@@ -25,6 +23,9 @@ export default class Enemy extends cc.Component {
   private enemyHP: number = 9; // Add enemy HP property
 
   onLoad() {
+
+    // cc.director.getPhysicsManager().enabled = true;
+    // cc.director.getCollisionManager().enabled = true;
     this.isAlive = false;
     this.speed = 500; // Adjust the speed of the enemy's movement
     this.shootInterval = 0.5; // Adjust the time interval between shots
@@ -87,6 +88,7 @@ export default class Enemy extends cc.Component {
           this.spawnMultiple(enemyCount); // Spawn 'enemyCount' enemies
           enemyCount++;
           totalSpawned++;
+          // console.log(enemyCount - 1);
         } else {
           this.spawnMultiple(enemyCount);
         }
@@ -149,69 +151,68 @@ export default class Enemy extends cc.Component {
   scheduleShoot(enemy): void {
     // Schedule bullet shooting with a delay equal to shootInterval
     this.shootScheduler = ++this.shootScheduleIdCounter;
-    cc.director.getScheduler().schedule(
-      () => {
-        this.shootTowardsLeft(enemy);
-      },
-      this,
-      this.shootInterval,
-      0,
-      0,
-      false
-    );
+    cc.director
+      .getScheduler()
+      .schedule(
+        () => {
+          this.shootTowardsLeft(enemy);
+        },
+        this,
+        this.shootInterval,
+        0,
+        0,
+        false
+      );
   }
 
-  shootTowardsLeft(enemy): void {
-    const bullet = cc.instantiate(this.bulletPrefab);
-    bullet.setPosition(cc.v2(enemy.position.x, enemy.position.y));
-    // console.log(enemy.position);
-
-    const bulletSpeed = 500;
-    const bulletEndPosition = cc.v2(-100, bullet.position.y);
-    const bulletEndPosition2 = cc.v3(-100, bullet.position.y);
-
-    const distance = bullet.position.sub(bulletEndPosition2).mag();
-    const duration = distance / bulletSpeed;
-    const moveAction = cc.moveTo(duration, bulletEndPosition);
-    const removeAction = cc.removeSelf(true);
-
-    bullet.runAction(cc.sequence(moveAction, removeAction));
-
-    this.node.parent.addChild(bullet);
-  }
-
-  // shootTowardsPlayer(): void {
-  //   // Create an instance of the bullet prefab
+  // shootTowardsLeft(enemy): void {
   //   const bullet = cc.instantiate(this.bulletPrefab);
-  //   bullet.setPosition(this.enemyNode.position);
-  //   const bulletDirection = this.previousPlayerPosition
-  //     ? this.previousPlayerPosition.sub(bullet.getPosition()).normalize()
-  //     : cc.v2(0, -1);
+  //   bullet.setPosition(cc.v2(enemy.position.x, enemy.position.y));
 
-  //   // Calculate the bullet's movement
+  //   // Add collision component to the bullet node
+  //   // const collider = bullet.addComponent(cc.BoxCollider);
+  //   // collider.size = bullet.getContentSize();
+
+  //   // Set collision handler function
+  //   // collider.on("collision-enter", this.handleCollision, this);
+
   //   const bulletSpeed = 500;
-  //   const bulletEndPosition = bullet.getPosition().add(bulletDirection.mul(1000));
+  //   const bulletEndPosition = cc.v2(-100, bullet.position.y);
+  //   const bulletEndPosition2 = cc.v3(-100, bullet.position.y);
 
-  //   const distance = bullet.getPosition().sub(bulletEndPosition).mag();
+  //   const distance = bullet.position.sub(bulletEndPosition2).mag();
   //   const duration = distance / bulletSpeed;
-
   //   const moveAction = cc.moveTo(duration, bulletEndPosition);
   //   const removeAction = cc.removeSelf(true);
+
   //   bullet.runAction(cc.sequence(moveAction, removeAction));
+
   //   this.node.parent.addChild(bullet);
   // }
 
-
-  handleBulletCollision(bullet: cc.Node, enemy: cc.Node): void {
-    this.enemyHP--; // Decrease enemy HP when hit by a bullet
-
-    if (this.enemyHP <= 0) {
-      // Enemy destroyed when HP reaches 0
-      enemy.removeFromParent();
-      this.enemyPool.put(enemy);
+  shootTowardsLeft(enemy): void {
+    if (enemy && enemy.isValid) {
+      const bullet = cc.instantiate(this.bulletPrefab);
+      bullet.setPosition(cc.v2(enemy.position.x, enemy.position.y));
+  
+      const bulletSpeed = 500;
+      const bulletEndPosition = cc.v2(-100, bullet.position.y);
+      const bulletEndPosition2 = cc.v3(-100, bullet.position.y);
+  
+      const distance = bullet.position.sub(bulletEndPosition2).mag();
+      const duration = distance / bulletSpeed;
+      const moveAction = cc.moveTo(duration, bulletEndPosition);
+      const removeAction = cc.removeSelf(true);
+  
+      bullet.runAction(cc.sequence(moveAction, removeAction));
+  
+      this.node.parent.addChild(bullet);
+    } else {
+      console.log('Invalid enemy node');
     }
-
-    bullet.removeFromParent();
   }
-}
+  
 
+
+
+}

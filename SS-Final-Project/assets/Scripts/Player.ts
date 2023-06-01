@@ -194,6 +194,7 @@ export default class Player extends cc.Component {
   onBeginContact(contact, selfCollider, otherCollider): void {
     if (otherCollider.node.group == "enemy" && !this.isReborn) {
       this.isDead = true;
+      // console.log("mati");
     }
   }
 

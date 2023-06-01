@@ -61,9 +61,12 @@ export default class Bullet extends cc.Component {
 
   //detect collision with enemies
   onBeginContact(contact, self, other) {
-    console.log("contact");
+    // console.log("contact");
     this.node.stopAllActions();
-
+    // if (other.node.group === "enemy" && other.node.name !== "bullet") {
+    if (other.node.group === "enemy"){
+    other.node.destroy();
+      }
     this.unscheduleAllCallbacks();
 
     this.scheduleOnce(() => {
