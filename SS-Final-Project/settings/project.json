@@ -1,12 +1,12 @@
 {
-  "start-scene": "447ab933-b85a-4869-b0bc-afd7d9f2232f",
+  "start-scene": "bd3ecbda-b7e6-42f6-a555-eb8d08879df2",
   "group-list": [
-    "enemy",
-    ""
+    "player",
+    "enemy"
   ],
   "collision-matrix": [
     [
-      true,
+      false,
       true
     ],
     [
