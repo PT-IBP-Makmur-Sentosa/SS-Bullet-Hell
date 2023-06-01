@@ -11,7 +11,7 @@ export default class Enemy extends cc.Component {
   @property({ type: cc.Node })
   private playerNode: cc.Node = null;
 
-  private enemyNode: cc.Node = null;
+  private enemyPool: cc.NodePool = null;
   private isAlive: boolean = false;
   private speed: number = 200;
   private shootInterval: number = 1.5;
@@ -24,6 +24,13 @@ export default class Enemy extends cc.Component {
     this.isAlive = false;
     this.speed = 200; // Adjust the speed of the enemy's movement
     this.shootInterval = 1.5; // Adjust the time interval between shots
+
+    this.enemyPool = new cc.NodePool();
+    const initialEnemyCount = 10;
+    for (let i = 0; i < initialEnemyCount; i++) {
+      const enemy = cc.instantiate(this.enemyPrefab);
+      this.enemyPool.put(enemy);
+    }
   }
 
   start() {
@@ -65,34 +72,68 @@ export default class Enemy extends cc.Component {
 
   spawn(): void {
     this.isAlive = true;
+    let enemyCount = 1;
+    let delay = 1;
+    let totalSpawned = 0;
+    const maxEnemies = 10;
   
-    // Instantiate the enemy prefab
-    this.enemyNode = cc.instantiate(this.enemyPrefab);
-    // this.node.addChild(this.enemyNode);
+    const spawnEnemy = () => {
+      this.scheduleOnce(() => {
+        if (totalSpawned < maxEnemies) {
+          this.spawnMultiple(enemyCount); // Spawn 'enemyCount' enemies
+          enemyCount++;
+          totalSpawned++;
+        }
+        else {
+          this.spawnMultiple(enemyCount);
+        }
+        delay = 2;
+        spawnEnemy();
+      }, delay);
+    };
   
-    this.scheduleOnce(() => {
-        this.spawnMultiple(3); // Spawn 3 enemies
-      }, 1);
-    // this.scheduleShoot();
+    // spawnEnemy();
   }
-  
   
 
   spawnMultiple(count: number): void {
-    const spacing = 300; // Adjust the spacing between enemies
-  
+    const minSpacing = 50; // Minimum spacing between enemies
+    const maxSpacing = 600; // Maximum spacing between enemies
+
+    const minSpacingX = 700; // Minimum spacing between enemies
+    const maxSpacingX = 850; // Maximum spacing between enemies
+
     for (let i = 0; i < count; i++) {
-      const enemy = cc.instantiate(this.enemyPrefab);
-      enemy.setPosition(cc.v2((i + 1) * spacing, 450));
+      const spacing = Math.random() * (maxSpacing - minSpacing) + minSpacing;
+      const spacingX = Math.random() * (maxSpacingX - minSpacingX) + minSpacingX;
+
+      let enemy: cc.Node = null;
+      if (this.enemyPool.size() > 0) {
+        enemy = this.enemyPool.get();
+        enemy.setPosition(cc.v2(spacingX, spacing));
+      } else {
+        enemy = cc.instantiate(this.enemyPrefab);
+        enemy.setPosition(cc.v2(spacingX, spacing));
+      }
+
       this.node.addChild(enemy);
-      console.log("Spawned enemy at index", i);
-      this.scheduleShoot();
+      this.moveEnemy(enemy);
     }
   }
-  
 
-  
+  moveEnemy(enemy: cc.Node): void {
+    // Move enemy horizontally to the left
+    const moveAction = cc.moveBy(5, cc.v2(-1000, 0)); // Adjust the duration and distance
+    const destroyAction = cc.callFunc(() => {
+      if (enemy.position.x <= -5) {
+        enemy.removeFromParent();
+        this.enemyPool.put(enemy);
+      }
+    });
 
+    const sequence = cc.sequence(moveAction, destroyAction);
+    enemy.runAction(sequence);
+  }
 
   unscheduleRespawn(): void {
     // Stop the enemy respawn scheduler
@@ -104,7 +145,7 @@ export default class Enemy extends cc.Component {
     this.shootScheduler = cc.director.getScheduler().schedule(
       () => {
         this.shootTowardsBottom();
-        this.shootTowardsPlayer();
+        // this.shootTowardsPlayer();
       },
       this,
       this.shootInterval,
