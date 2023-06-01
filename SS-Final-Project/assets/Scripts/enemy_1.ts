@@ -18,12 +18,12 @@ export default class Enemy extends cc.Component {
   private respawnScheduler: number = null;
   private shootScheduler: number = null;
   private moveScheduler: number = null;
-  private previousPlayerPosition: cc.Vec2 = null;
+  private previousPlayerPosition: cc.Vec3 = null;
 
   onLoad() {
     this.isAlive = false;
-    this.speed = 200; // Adjust the speed of the enemy's movement
-    this.shootInterval = 1.5; // Adjust the time interval between shots
+    this.speed = 500; // Adjust the speed of the enemy's movement
+    this.shootInterval = 2; // Adjust the time interval between shots
 
     this.enemyPool = new cc.NodePool();
     const initialEnemyCount = 10;
@@ -87,7 +87,7 @@ export default class Enemy extends cc.Component {
         else {
           this.spawnMultiple(enemyCount);
         }
-        delay = 2;
+        delay = 5;
         spawnEnemy();
       }, delay);
     };
@@ -111,90 +111,100 @@ export default class Enemy extends cc.Component {
       if (this.enemyPool.size() > 0) {
         enemy = this.enemyPool.get();
         enemy.setPosition(cc.v2(spacingX, spacing));
+        this.scheduleShoot(enemy);
       } else {
         enemy = cc.instantiate(this.enemyPrefab);
         enemy.setPosition(cc.v2(spacingX, spacing));
+        this.scheduleShoot(enemy);
       }
 
       this.node.addChild(enemy);
       this.moveEnemy(enemy);
+      // this.scheduleShoot(enemy);
     }
   }
 
   moveEnemy(enemy: cc.Node): void {
+    // Delay before moving enemy to the left
+    const delayAction = cc.delayTime(1); // Adjust the delay duration
+  
     // Move enemy horizontally to the left
-    const moveAction = cc.moveBy(5, cc.v2(-1000, 0)); // Adjust the duration and distance
+    const moveAction = cc.moveBy(15, cc.v2(-1000, 0)); // Adjust the duration and distance
+  
     const destroyAction = cc.callFunc(() => {
-      if (enemy.position.x <= -5) {
+      if (enemy.position.x <= -50) {
         enemy.removeFromParent();
         this.enemyPool.put(enemy);
+        // enemy.destroy();
       }
     });
-
-    const sequence = cc.sequence(moveAction, destroyAction);
+  
+    const sequence = cc.sequence(delayAction, moveAction, destroyAction);
     enemy.runAction(sequence);
   }
+  
 
   unscheduleRespawn(): void {
     // Stop the enemy respawn scheduler
     cc.director.getScheduler().unschedule(this.respawnScheduler, this);
   }
 
-  scheduleShoot(): void {
+  scheduleShoot(enemy): void {
     // Schedule bullet shooting with a delay equal to shootInterval
     this.shootScheduler = cc.director.getScheduler().schedule(
       () => {
-        this.shootTowardsBottom();
         // this.shootTowardsPlayer();
+        this.shootTowardsLeft(enemy);
       },
       this,
       this.shootInterval,
-      false
+      false // Set the repeat parameter to false for no repeat
     );
   }
+  
 
   unscheduleShoot(): void {
     cc.director.getScheduler().unschedule(this.shootScheduler, this);
   }
 
-  shootTowardsBottom(): void {
+
+  shootTowardsLeft(enemy): void {
     const bullet = cc.instantiate(this.bulletPrefab);
-    bullet.setPosition(this.enemyNode.position);
-
-    const bulletSpeed = 300;
-    const bulletEndPosition = cc.v2(bullet.position.x, -100);
-
-    const distance = bullet.position.sub(bulletEndPosition).mag();
-    const duration = distance / bulletSpeed;
-
-    const moveAction = cc.moveTo(duration, bulletEndPosition);
-    const removeAction = cc.removeSelf(true);
-
-    bullet.runAction(cc.sequence(moveAction, removeAction));
-
-    this.node.parent.addChild(bullet);
-    // Play a shooting sound effect if desired
-    // ...
-  }
-
-  shootTowardsPlayer(): void {
-    // Create an instance of the bullet prefab
-    const bullet = cc.instantiate(this.bulletPrefab);
-    bullet.setPosition(this.enemyNode.position);
-    const bulletDirection = this.previousPlayerPosition
-      ? this.previousPlayerPosition.sub(bullet.getPosition()).normalize()
-      : cc.v2(0, -1);
-
-    // Calculate the bullet's movement
+    bullet.setPosition(cc.v2(enemy.position.x, enemy.position.y));
+    // console.log(enemy.position);
+  
     const bulletSpeed = 500;
-    const bulletEndPosition = bullet.getPosition().add(bulletDirection.mul(1000));
-
-    const distance = bullet.getPosition().sub(bulletEndPosition).mag();
+    const bulletEndPosition = cc.v2(-100, bullet.position.y);
+    const bulletEndPosition2 = cc.v3(-100, bullet.position.y);
+  
+    const distance = bullet.position.sub(bulletEndPosition2).mag();
     const duration = distance / bulletSpeed;
-
     const moveAction = cc.moveTo(duration, bulletEndPosition);
     const removeAction = cc.removeSelf(true);
     bullet.runAction(cc.sequence(moveAction, removeAction));
+  
     this.node.parent.addChild(bullet);
   }
+  
+
+  // shootTowardsPlayer(): void {
+  //   // Create an instance of the bullet prefab
+  //   const bullet = cc.instantiate(this.bulletPrefab);
+  //   bullet.setPosition(this.enemyNode.position);
+  //   const bulletDirection = this.previousPlayerPosition
+  //     ? this.previousPlayerPosition.sub(bullet.getPosition()).normalize()
+  //     : cc.v2(0, -1);
+
+  //   // Calculate the bullet's movement
+  //   const bulletSpeed = 500;
+  //   const bulletEndPosition = bullet.getPosition().add(bulletDirection.mul(1000));
+
+  //   const distance = bullet.getPosition().sub(bulletEndPosition).mag();
+  //   const duration = distance / bulletSpeed;
+
+  //   const moveAction = cc.moveTo(duration, bulletEndPosition);
+  //   const removeAction = cc.removeSelf(true);
+  //   bullet.runAction(cc.sequence(moveAction, removeAction));
+  //   this.node.parent.addChild(bullet);
+  // }
 }
