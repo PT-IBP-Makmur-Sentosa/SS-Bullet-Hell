@@ -77,25 +77,23 @@ export default class Enemy extends cc.Component {
     let delay = 1;
     let totalSpawned = 0;
     const maxEnemies = 10;
-  
+
     const spawnEnemy = () => {
       this.scheduleOnce(() => {
         if (totalSpawned < maxEnemies) {
           this.spawnMultiple(enemyCount); // Spawn 'enemyCount' enemies
           enemyCount++;
           totalSpawned++;
-        }
-        else {
+        } else {
           this.spawnMultiple(enemyCount);
         }
         delay = 5;
         spawnEnemy();
       }, delay);
     };
-  
+
     spawnEnemy();
   }
-  
 
   spawnMultiple(count: number): void {
     const minSpacing = 50; // Minimum spacing between enemies
@@ -106,7 +104,8 @@ export default class Enemy extends cc.Component {
 
     for (let i = 0; i < count; i++) {
       const spacing = Math.random() * (maxSpacing - minSpacing) + minSpacing;
-      const spacingX = Math.random() * (maxSpacingX - minSpacingX) + minSpacingX;
+      const spacingX =
+        Math.random() * (maxSpacingX - minSpacingX) + minSpacingX;
 
       let enemy: cc.Node = null;
       if (this.enemyPool.size() > 0) {
@@ -128,10 +127,10 @@ export default class Enemy extends cc.Component {
   moveEnemy(enemy: cc.Node): void {
     // Delay before moving enemy to the left
     const delayAction = cc.delayTime(1); // Adjust the delay duration
-  
+
     // Move enemy horizontally to the left
     const moveAction = cc.moveBy(15, cc.v2(-1000, 0)); // Adjust the duration and distance
-  
+
     const destroyAction = cc.callFunc(() => {
       if (enemy.position.x <= -50) {
         enemy.removeFromParent();
@@ -139,49 +138,44 @@ export default class Enemy extends cc.Component {
         // enemy.destroy();
       }
     });
-  
+
     const sequence = cc.sequence(delayAction, moveAction, destroyAction);
     enemy.runAction(sequence);
   }
-  
 
-
-scheduleShoot(enemy): void {
-  // Schedule bullet shooting with a delay equal to shootInterval
-  this.shootScheduler = ++this.shootScheduleIdCounter;
-  cc.director.getScheduler().schedule(
-    () => {
-      this.shootTowardsLeft(enemy);
-    },
-    this,
-    this.shootInterval,
-    0,
-    0,
-    false
-  );
-}
-
-  
+  scheduleShoot(enemy): void {
+    // Schedule bullet shooting with a delay equal to shootInterval
+    this.shootScheduler = ++this.shootScheduleIdCounter;
+    cc.director.getScheduler().schedule(
+      () => {
+        this.shootTowardsLeft(enemy);
+      },
+      this,
+      this.shootInterval,
+      0,
+      0,
+      false
+    );
+  }
 
   shootTowardsLeft(enemy): void {
     const bullet = cc.instantiate(this.bulletPrefab);
     bullet.setPosition(cc.v2(enemy.position.x, enemy.position.y));
     // console.log(enemy.position);
-  
+
     const bulletSpeed = 500;
     const bulletEndPosition = cc.v2(-100, bullet.position.y);
     const bulletEndPosition2 = cc.v3(-100, bullet.position.y);
-  
+
     const distance = bullet.position.sub(bulletEndPosition2).mag();
     const duration = distance / bulletSpeed;
     const moveAction = cc.moveTo(duration, bulletEndPosition);
     const removeAction = cc.removeSelf(true);
 
     bullet.runAction(cc.sequence(moveAction, removeAction));
-  
+
     this.node.parent.addChild(bullet);
   }
-  
 
   // shootTowardsPlayer(): void {
   //   // Create an instance of the bullet prefab

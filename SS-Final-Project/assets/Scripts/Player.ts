@@ -7,6 +7,47 @@
 
 const { ccclass, property } = cc._decorator;
 
+// make a player class to have 5 different types of player
+// each player has different attack, lives, and skill
+class PlayerClass {
+  private attack: number;
+  private lives: number;
+  private skill: string;
+
+  constructor(attack: number, lives: number, skill: string) {
+    this.attack = attack;
+    this.lives = lives;
+    this.skill = skill;
+  }
+
+  public getAttack(): number {
+    return this.attack;
+  }
+
+  public getLives(): number {
+    return this.lives;
+  }
+
+  public getSkill(): string {
+    return this.skill;
+  }
+
+  public static original(): PlayerClass {
+    return new PlayerClass(3, 3, "extra attack damage(+1 ATK)");
+  }
+  public static plane2(): PlayerClass {
+    return new PlayerClass(4, 2, "invincible");
+  }
+  public static plane3(): PlayerClass {
+    return new PlayerClass(2, 6, "extra attack speed(-0.05 interval)");
+  }
+  public static plane4(): PlayerClass {
+    return new PlayerClass(5, 3, "extra HP(+1 HP)");
+  }
+  public static plane5(): PlayerClass {
+    return new PlayerClass(4, 4, "double attack(2x ATK)");
+  }
+}
 @ccclass
 export default class Player extends cc.Component {
   @property()
@@ -26,7 +67,7 @@ export default class Player extends cc.Component {
   private playerSpeed: number = 150;
   private isDead: boolean = false;
   private isReborn: boolean = false;
-  private rebornTime: number = 1;
+  private rebornTime: number = 2;
   private spaceDown: boolean = false;
   private anim = null; //this will use to get animation component
   private animateState = null; //this will use to record animationState
@@ -122,13 +163,19 @@ export default class Player extends cc.Component {
   }
 
   playerReborn(dt): void {
-    if (this.isDead) {
+    if (this.isDead && !this.isReborn && this.lives > 0) {
       this.resetPosition();
-      this.isDead = false;
+      this.isReborn = true;
       this.lives--;
       cc.log("lives: " + this.lives);
-    }
-    if (!this.lives) {
+      this.anim.play("hit");
+      this.scheduleOnce(() => {
+        this.isReborn = false;
+        this.isDead = false;
+
+        this.anim.stop("hit");
+      }, this.rebornTime);
+    } else if (!this.lives) {
       this.node.destroy();
     }
   }
@@ -145,7 +192,7 @@ export default class Player extends cc.Component {
   }
 
   onBeginContact(contact, selfCollider, otherCollider): void {
-    if (otherCollider.node.group == "enemy") {
+    if (otherCollider.node.group == "enemy" && !this.isReborn) {
       this.isDead = true;
     }
   }
