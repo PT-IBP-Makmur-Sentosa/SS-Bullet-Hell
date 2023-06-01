@@ -2750,6 +2750,15 @@
     "shopBtn": {
       "__id__": 47
     },
+    "stage1Btn": {
+      "__id__": 26
+    },
+    "stage2Btn": {
+      "__id__": 33
+    },
+    "stage3Btn": {
+      "__id__": 40
+    },
     "_id": "306FHuj7RMLJvawHueGLSN"
   }
 ]

@@ -25,6 +25,15 @@ export default class NewClass extends cc.Component {
     @property(cc.Button)
     shopBtn: cc.Button = null;
 
+    @property(cc.Button)
+    stage1Btn: cc.Button = null;
+
+    @property(cc.Button)
+    stage2Btn: cc.Button = null;
+    
+    @property(cc.Button)
+    stage3Btn: cc.Button = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     
@@ -37,6 +46,33 @@ export default class NewClass extends cc.Component {
           if (snapshot.exists()) {
             const userData = snapshot.val();
             this.currentShipIndex = userData.selectedShipIndex;
+            const stagesUnlocked = userData.stage;
+            if(stagesUnlocked[0]){
+                this.stage1Btn.node.opacity = 255;
+                this.stage1Btn.interactable = true;
+            }
+            else if (!stagesUnlocked[0]){
+                this.stage1Btn.node.opacity = 150;
+                this.stage1Btn.interactable = false;
+            }
+
+            if(stagesUnlocked[1]){
+                this.stage2Btn.node.opacity = 255;
+                this.stage2Btn.interactable = true;
+            }
+            else if (!stagesUnlocked[1]){
+                this.stage2Btn.node.opacity = 150;
+                this.stage2Btn.interactable = false;
+            }
+
+            if(stagesUnlocked[2]){
+                this.stage3Btn.node.opacity = 255;
+                this.stage3Btn.interactable = true;
+            }
+            else if (!stagesUnlocked[2]){
+                this.stage3Btn.node.opacity = 150;
+                this.stage3Btn.interactable = false;
+            }            
           } else {
             console.log("User not found");
           }
