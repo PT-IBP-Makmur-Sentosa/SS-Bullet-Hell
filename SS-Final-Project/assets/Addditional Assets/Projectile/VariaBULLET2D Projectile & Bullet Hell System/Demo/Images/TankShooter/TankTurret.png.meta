@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "d3aa6e24-4c97-48b2-90f6-772a10703b4b",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 37,
+  "height": 12,
+  "platformSettings": {},
+  "subMetas": {
+    "TankTurret": {
+      "ver": "1.0.6",
+      "uuid": "7507eca8-af2a-4ed9-b834-aee4ffccc88a",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "d3aa6e24-4c97-48b2-90f6-772a10703b4b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 2,
+      "width": 37,
+      "height": 8,
+      "rawWidth": 37,
+      "rawHeight": 12,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

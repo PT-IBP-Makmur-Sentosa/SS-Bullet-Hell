@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "7d8aaabb-6582-4457-b626-7f28a360e1ef",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 108,
+  "height": 44,
+  "platformSettings": {},
+  "subMetas": {
+    "GoofWeapon": {
+      "ver": "1.0.6",
+      "uuid": "b4225eb6-46a2-4b38-aeeb-9561e03ca95f",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "7d8aaabb-6582-4457-b626-7f28a360e1ef",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 8,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 107,
+      "height": 28,
+      "rawWidth": 108,
+      "rawHeight": 44,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

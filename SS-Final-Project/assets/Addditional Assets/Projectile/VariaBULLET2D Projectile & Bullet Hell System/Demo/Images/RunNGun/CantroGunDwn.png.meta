@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "ae875c9e-b1fd-4683-bd58-b95d60cb31a3",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 23,
+  "height": 23,
+  "platformSettings": {},
+  "subMetas": {
+    "CantroGunDwn": {
+      "ver": "1.0.6",
+      "uuid": "9ddc32c7-a74b-4a71-99b3-63707d7b6f36",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "ae875c9e-b1fd-4683-bd58-b95d60cb31a3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 23,
+      "height": 23,
+      "rawWidth": 23,
+      "rawHeight": 23,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "9893392a-7c8c-4a56-9b6a-1533a29e3ab9",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 200,
+  "height": 200,
+  "platformSettings": {},
+  "subMetas": {
+    "WarpLaserMain1": {
+      "ver": "1.0.6",
+      "uuid": "3bc96c56-0fc2-4bfa-aa25-2b6cc7e9c4b2",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "9893392a-7c8c-4a56-9b6a-1533a29e3ab9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 0,
+      "trimY": 43,
+      "width": 200,
+      "height": 113,
+      "rawWidth": 200,
+      "rawHeight": 200,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

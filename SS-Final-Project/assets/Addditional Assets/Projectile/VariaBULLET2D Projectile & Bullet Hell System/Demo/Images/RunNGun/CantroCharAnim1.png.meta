@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "0c484f5c-f879-4943-a5db-6da74c584e0b",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 46,
+  "height": 93,
+  "platformSettings": {},
+  "subMetas": {
+    "CantroCharAnim1": {
+      "ver": "1.0.6",
+      "uuid": "ad5ea564-0617-44de-b720-4eb00345ee82",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "0c484f5c-f879-4943-a5db-6da74c584e0b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 5,
+      "trimY": 12,
+      "width": 36,
+      "height": 69,
+      "rawWidth": 46,
+      "rawHeight": 93,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
