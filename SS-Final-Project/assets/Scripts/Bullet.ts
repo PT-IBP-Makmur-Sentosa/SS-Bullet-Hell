@@ -65,6 +65,8 @@ export default class Bullet extends cc.Component {
     this.node.stopAllActions();
     // if (other.node.group === "enemy" && other.node.name !== "bullet") {
     if (other.node.group === "enemy"){
+      var stageManager = cc.find("StageManager").getComponent("StageManager")
+      stageManager.score += 100
     other.node.destroy();
       }
     this.unscheduleAllCallbacks();

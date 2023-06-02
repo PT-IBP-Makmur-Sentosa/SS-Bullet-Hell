@@ -167,6 +167,8 @@ export default class Player extends cc.Component {
       this.resetPosition();
       this.isReborn = true;
       this.lives--;
+      var stageManager = cc.find("StageManager").getComponent("StageManager")
+      stageManager.health = this.lives
       cc.log("lives: " + this.lives);
       this.anim.play("hit");
       this.scheduleOnce(() => {
