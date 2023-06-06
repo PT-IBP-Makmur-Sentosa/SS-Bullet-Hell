@@ -95,7 +95,7 @@ export default class NewClass extends cc.Component {
     leftShip() {
         this.currentShipIndex--;
         console.log(this.currentShipIndex)
-        if (this.currentShipIndex <= 0) {
+        if (this.currentShipIndex < 0) {
             this.currentShipIndex = this.shipSprites.length - 1;
         }
         this.updateShipDisplay();
