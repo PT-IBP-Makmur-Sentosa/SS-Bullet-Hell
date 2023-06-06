@@ -2723,19 +2723,19 @@
     "_enabled": true,
     "shipSprites": [
       {
-        "__uuid__": "bc194dd0-e882-4d92-a0bd-6bf4a68562f6"
+        "__uuid__": "7f48bc38-8195-4ccc-adb0-437a0e83dbc4"
       },
       {
-        "__uuid__": "c00049ae-3860-4213-9762-603039fdff49"
+        "__uuid__": "5ef927e2-f8b7-4bbe-8f8c-a454fa7675da"
       },
       {
-        "__uuid__": "a6b49855-00b2-4e6e-90e0-09eba47bdec1"
+        "__uuid__": "905f1630-0fb3-4734-9a47-71d4e4168369"
       },
       {
-        "__uuid__": "cae91f1f-95a3-4401-857d-aba9b48e4741"
+        "__uuid__": "40c3de30-994f-4094-8b55-1b8fb8aad8c0"
       },
       {
-        "__uuid__": "e5d3dc0f-fc48-4da2-a439-8e8737debbd3"
+        "__uuid__": "fc8b268d-9770-4ea4-9ab0-f7c9b13309bf"
       }
     ],
     "renderShipSprite": {

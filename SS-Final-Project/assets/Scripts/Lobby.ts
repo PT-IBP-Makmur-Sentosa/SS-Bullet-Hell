@@ -38,6 +38,7 @@ export default class NewClass extends cc.Component {
 
     
     private currentShipIndex: number = 0;
+    private availableShip: Array<boolean> = [true, false, false, false, false];
     async onLoad () {
         const user = firebase.auth().currentUser;
         const db = firebase.database();
@@ -46,6 +47,7 @@ export default class NewClass extends cc.Component {
           if (snapshot.exists()) {
             const userData = snapshot.val();
             this.currentShipIndex = userData.selectedShipIndex;
+            this.availableShip = userData.shipUnLocked;
             const stagesUnlocked = userData.stage;
             if(stagesUnlocked[0]){
                 this.stage1Btn.node.opacity = 255;
@@ -113,7 +115,11 @@ export default class NewClass extends cc.Component {
 
         // Assign the new sprite frame
         this.renderShipSprite.spriteFrame = this.shipSprites[this.currentShipIndex];
-
+        this.renderShipSprite.node.color = this.availableShip[this.currentShipIndex] ? cc.Color.WHITE : cc.Color.BLACK;
+        // this.renderShipSprite.node.opacity = this.availableShip[this.currentShipIndex] ? 255 : 150; // Set initial opacity to 0
+        // console.log("available or not");
+        // console.log(this.availableShip[this.currentShipIndex]);
+        // console.log(this.renderShipSprite.node.opacity);
         // Apply the animations
         this.renderShipSprite.node.stopAllActions();
         this.renderShipSprite.node.opacity = 0; // Set initial opacity to 0

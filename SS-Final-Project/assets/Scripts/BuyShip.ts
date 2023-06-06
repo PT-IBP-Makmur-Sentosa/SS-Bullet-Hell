@@ -28,6 +28,7 @@ export default class NewClass extends cc.Component {
             const userData = snapshot.val();
             if(userData.shipUnLocked[this.buyShipIndex]){
                 this.node.getComponent(cc.Button).interactable = false;
+                this.node.getComponent(cc.Button).node.opacity = 150;
             }
           } else {
             console.log("User not found");
