@@ -1818,11 +1818,11 @@
     "enemyPrefab": {
       "__uuid__": "a2799d13-b7d2-4ea0-817b-2c493afae5b0"
     },
-    "bulletPrefab": {
-      "__uuid__": "a95539ec-83bb-4cca-92fb-bc3821fa44fe"
+    "enemyPrefab2": {
+      "__uuid__": "20f10e10-b1f0-47c4-94e7-de38892a4144"
     },
-    "playerNode": {
-      "__id__": 17
+    "enemyPrefab3": {
+      "__uuid__": "406a66ef-9a1c-47f0-9236-4375477d722a"
     },
     "_id": "05li/np4JGwbwwBKfo4gZq"
   }

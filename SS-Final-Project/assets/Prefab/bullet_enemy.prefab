@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "enemy",
+    "_name": "bullet",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -45,8 +45,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 46,
-      "height": 57
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -57,15 +57,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        831.292,
-        465.896,
+        960,
+        640,
         0,
         0,
         0,
-        -0.7071067811865475,
-        0.7071067811865476,
-        0.5,
-        0.5,
+        1,
+        6.123233995736766e-17,
+        0.2,
+        0.2,
         1
       ]
     },
@@ -73,13 +73,13 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": -90
+      "z": 180
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 3,
+    "groupIndex": 3,
     "_id": ""
   },
   {
@@ -98,10 +98,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f4f11721-9cef-4d40-b0e4-0be9b2fc2246"
+      "__uuid__": "078aecd5-f6d0-4e1f-bdfc-82add31a38d6"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -122,8 +122,8 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 1,
-    "_allowSleep": false,
+    "_type": 2,
+    "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
     "_angularDamping": 0,
@@ -135,12 +135,12 @@
     "_angularVelocity": 0,
     "_fixedRotation": false,
     "enabledContactListener": true,
-    "bullet": false,
+    "bullet": true,
     "awakeOnLoad": true,
     "_id": ""
   },
   {
-    "__type__": "cc.PhysicsCircleCollider",
+    "__type__": "cc.PhysicsBoxCollider",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -158,20 +158,21 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 8,
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 100,
+      "height": 100
+    },
     "_id": ""
   },
   {
-    "__type__": "d46e0vldT9HFacH24oKTR8L",
+    "__type__": "9fc38gv7SpE+oYOIbXb5WMv",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "bulletPrefab": {
-      "__uuid__": "a95539ec-83bb-4cca-92fb-bc3821fa44fe"
-    },
     "_id": ""
   },
   {
