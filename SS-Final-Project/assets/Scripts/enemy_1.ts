@@ -28,7 +28,7 @@ export default class Enemy extends cc.Component {
     // cc.director.getCollisionManager().enabled = true;
     this.isAlive = false;
     this.speed = 500; // Adjust the speed of the enemy's movement
-    this.shootInterval = 0.5; // Adjust the time interval between shots
+    this.shootInterval = 1; // Adjust the time interval between shots
 
     this.enemyPool = new cc.NodePool();
     const initialEnemyCount = 10;
@@ -102,10 +102,10 @@ export default class Enemy extends cc.Component {
 
   spawnMultiple(count: number): void {
     const minSpacing = 50; // Minimum spacing between enemies
-    const maxSpacing = 600; // Maximum spacing between enemies
+    const maxSpacing = 510; // Maximum spacing between enemies
 
-    const minSpacingX = 700; // Minimum spacing between enemies
-    const maxSpacingX = 850; // Maximum spacing between enemies
+    const minSpacingX = 600; // Minimum spacing between enemies
+    const maxSpacingX = 900; // Maximum spacing between enemies
 
     for (let i = 0; i < count; i++) {
       const spacing = Math.random() * (maxSpacing - minSpacing) + minSpacing;
@@ -133,8 +133,9 @@ export default class Enemy extends cc.Component {
     // Delay before moving enemy to the left
     const delayAction = cc.delayTime(1); // Adjust the delay duration
 
+    var time = Math.random() * (10 - 4) + 4   
     // Move enemy horizontally to the left
-    const moveAction = cc.moveBy(15, cc.v2(-1000, 0)); // Adjust the duration and distance
+    const moveAction = cc.moveBy(time, cc.v2(-1000, 0)); // Adjust the duration and distance
 
     const destroyAction = cc.callFunc(() => {
       if (enemy.position.x <= -50) {
@@ -160,6 +161,7 @@ export default class Enemy extends cc.Component {
         this,
         this.shootInterval,
         0,
+        //cc.macro.REPEAT_FOREVER,
         0,
         false
       );

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "258b3dc6-c74d-449c-9bd2-5220801b84d1",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 48,
+  "height": 48,
+  "platformSettings": {},
+  "subMetas": {
+    "tankcannon-03B": {
+      "ver": "1.0.6",
+      "uuid": "973a3d0a-5c94-4d23-b63a-c6c7af8a3e10",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "258b3dc6-c74d-449c-9bd2-5220801b84d1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 0.5,
+      "trimX": 9,
+      "trimY": 9,
+      "width": 29,
+      "height": 29,
+      "rawWidth": 48,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
