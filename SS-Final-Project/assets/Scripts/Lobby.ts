@@ -49,6 +49,7 @@ export default class NewClass extends cc.Component {
             this.currentShipIndex = userData.selectedShipIndex;
             this.availableShip = userData.shipUnLocked;
             const stagesUnlocked = userData.stage;
+            this.updateShipDisplay();
             if(stagesUnlocked[0]){
                 this.stage1Btn.node.opacity = 255;
                 this.stage1Btn.interactable = true;
