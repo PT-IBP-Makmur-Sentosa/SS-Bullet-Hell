@@ -34,6 +34,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Button)
     stage3Btn: cc.Button = null;
 
+    @property(cc.Sprite)
+    loading: cc.Sprite = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     
@@ -45,6 +48,7 @@ export default class NewClass extends cc.Component {
         const userRef = db.ref('users/' + user?.uid);
         userRef.once('value', (snapshot) => {
           if (snapshot.exists()) {
+            this.loading.node.active = false;
             const userData = snapshot.val();
             this.currentShipIndex = userData.selectedShipIndex;
             this.availableShip = userData.shipUnLocked;

@@ -16,11 +16,25 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     coinsQuantity: cc.Label = null;
 
+    @property(cc.Sprite)
+    loading: cc.Sprite = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     async onLoad () {
         cc.director.on('shipPurchased', this.updateCoinsQuantity, this);
-        this.updateCoinsQuantity();
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref('users/' + user?.uid);
+        userRef.once('value', (snapshot) => {
+            if (snapshot.exists()) {
+                this.loading.node.active = false;
+                const userData = snapshot.val();
+                this.coinsQuantity.string = "Coins: " + userData.coins;
+            } else {
+                console.log("User not found");
+            }
+        });
     }
 
     updateCoinsQuantity() {
