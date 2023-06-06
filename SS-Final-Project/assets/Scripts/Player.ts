@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
+declare const firebase: any;
 
 // make a player class to have 5 different types of player
 // each player has different attack, lives, and skill
@@ -35,16 +36,16 @@ class PlayerClass {
   public static original(): PlayerClass {
     return new PlayerClass(3, 3, "extra attack damage(+1 ATK)");
   }
-  public static plane2(): PlayerClass {
+  public static plane1(): PlayerClass {
     return new PlayerClass(4, 2, "invincible");
   }
-  public static plane3(): PlayerClass {
+  public static plane2(): PlayerClass {
     return new PlayerClass(2, 6, "extra attack speed(-0.05 interval)");
   }
-  public static plane4(): PlayerClass {
+  public static plane3(): PlayerClass {
     return new PlayerClass(5, 3, "extra HP(+1 HP)");
   }
-  public static plane5(): PlayerClass {
+  public static plane4(): PlayerClass {
     return new PlayerClass(4, 4, "double attack(2x ATK)");
   }
 }
@@ -53,8 +54,10 @@ export default class Player extends cc.Component {
   @property()
   rebornPos: cc.Vec2 = cc.v2(0, 0);
 
-  @property()
-  lives: number = 3;
+  private lives: number = 10000;
+  private attack: number = 0;
+  private skill: string = "";
+  private bulletanim: string = "";
 
   @property(cc.Prefab)
   bulletPrefab: cc.Prefab = null;
@@ -71,20 +74,58 @@ export default class Player extends cc.Component {
   private spaceDown: boolean = false;
   private anim = null; //this will use to get animation component
   private animateState = null; //this will use to record animationState
+  private currentShipIndex: number = 0;
 
-  onLoad(): void {
+  async onLoad() {
     this.anim = this.getComponent(cc.Animation);
     cc.director.getPhysicsManager().enabled = true;
     cc.director.getCollisionManager().enabled = true;
+
     this.bulletPool = new cc.NodePool("Bullet");
-
     let maxBulletNum = 20;
-
     for (let i: number = 0; i < maxBulletNum; i++) {
       let bullet = cc.instantiate(this.bulletPrefab);
-
       this.bulletPool.put(bullet);
     }
+
+    const user = firebase.auth().currentUser;
+    const db = firebase.database();
+    const userRef = db.ref("users/" + user?.uid);
+    userRef.once("value", (snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        this.currentShipIndex = userData.selectedShipIndex;
+        const stagesUnlocked = userData.stage;
+        cc.log("stagesUnlocked: " + stagesUnlocked);
+        // set the player's lives and attack
+        if (this.currentShipIndex == 0) {
+          this.lives = PlayerClass.original().getLives();
+          this.attack = PlayerClass.original().getAttack();
+          this.skill = PlayerClass.original().getSkill();
+          this.bulletanim = "bullet";
+        } else if (this.currentShipIndex == 1) {
+          this.lives = PlayerClass.plane1().getLives();
+          this.attack = PlayerClass.plane1().getAttack();
+          this.skill = PlayerClass.plane1().getSkill();
+          this.bulletanim = "bullet1";
+        } else if (this.currentShipIndex == 2) {
+          this.lives = PlayerClass.plane2().getLives();
+          this.attack = PlayerClass.plane2().getAttack();
+          this.skill = PlayerClass.plane2().getSkill();
+          this.bulletanim = "bullet2";
+        } else if (this.currentShipIndex == 3) {
+          this.lives = PlayerClass.plane3().getLives();
+          this.attack = PlayerClass.plane3().getAttack();
+          this.skill = PlayerClass.plane3().getSkill();
+          this.bulletanim = "bullet3";
+        } else if (this.currentShipIndex == 4) {
+          this.lives = PlayerClass.plane4().getLives();
+          this.attack = PlayerClass.plane4().getAttack();
+          this.skill = PlayerClass.plane4().getSkill();
+          this.bulletanim = "bullet4";
+        }
+      }
+    });
   }
   start(): void {
     cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -167,8 +208,8 @@ export default class Player extends cc.Component {
       this.resetPosition();
       this.isReborn = true;
       this.lives--;
-      var stageManager = cc.find("StageManager").getComponent("StageManager")
-      stageManager.health = this.lives
+      var stageManager = cc.find("StageManager").getComponent("StageManager");
+      stageManager.health = this.lives;
       cc.log("lives: " + this.lives);
       this.anim.play("hit");
       this.scheduleOnce(() => {
@@ -190,6 +231,7 @@ export default class Player extends cc.Component {
     if (this.spaceDown) {
       this.schedule(this.createBullet, 0.3);
       this.animateState = this.anim.play("shoot");
+      cc.log(this.attack);
     }
   }
 

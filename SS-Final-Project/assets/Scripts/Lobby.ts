@@ -38,6 +38,7 @@ export default class NewClass extends cc.Component {
 
     
     private currentShipIndex: number = 0;
+    private availableShip: Array<boolean> = [true, false, false, false, false];
     async onLoad () {
         const user = firebase.auth().currentUser;
         const db = firebase.database();
@@ -46,7 +47,9 @@ export default class NewClass extends cc.Component {
           if (snapshot.exists()) {
             const userData = snapshot.val();
             this.currentShipIndex = userData.selectedShipIndex;
+            this.availableShip = userData.shipUnLocked;
             const stagesUnlocked = userData.stage;
+            this.updateShipDisplay();
             if(stagesUnlocked[0]){
                 this.stage1Btn.node.opacity = 255;
                 this.stage1Btn.interactable = true;
@@ -84,12 +87,14 @@ export default class NewClass extends cc.Component {
         this.btnRight.node.on('click', this.rightShip, this);
         this.shopBtn.node.on('click', this.openShop, this);
         this.updateShipDisplay();
+        console.log(this.currentShipIndex)
     }
 
     // update (dt) {}
 
     leftShip() {
         this.currentShipIndex--;
+        console.log(this.currentShipIndex)
         if (this.currentShipIndex < 0) {
             this.currentShipIndex = this.shipSprites.length - 1;
         }
@@ -98,6 +103,7 @@ export default class NewClass extends cc.Component {
 
     rightShip() {
         this.currentShipIndex++;
+        console.log(this.currentShipIndex)
         if (this.currentShipIndex >= this.shipSprites.length) {
             this.currentShipIndex = 0;
         }
@@ -113,7 +119,11 @@ export default class NewClass extends cc.Component {
 
         // Assign the new sprite frame
         this.renderShipSprite.spriteFrame = this.shipSprites[this.currentShipIndex];
-
+        this.renderShipSprite.node.color = this.availableShip[this.currentShipIndex] ? cc.Color.WHITE : cc.Color.BLACK;
+        // this.renderShipSprite.node.opacity = this.availableShip[this.currentShipIndex] ? 255 : 150; // Set initial opacity to 0
+        // console.log("available or not");
+        // console.log(this.availableShip[this.currentShipIndex]);
+        // console.log(this.renderShipSprite.node.opacity);
         // Apply the animations
         this.renderShipSprite.node.stopAllActions();
         this.renderShipSprite.node.opacity = 0; // Set initial opacity to 0
@@ -122,5 +132,20 @@ export default class NewClass extends cc.Component {
 
     openShop(){
         cc.director.loadScene("Shop");
+    }
+
+    public toStage(event, customEventData: string) : void {
+        if(customEventData == "1"){
+            //update firebase
+            cc.director.loadScene("Stage1")
+        }
+        else if(customEventData == "2"){
+            //update firebase
+            cc.director.loadScene("Stage2")
+        }
+        else if(customEventData == "3"){
+            //update firebase
+            cc.director.loadScene("Stage3")
+        }
     }
 }

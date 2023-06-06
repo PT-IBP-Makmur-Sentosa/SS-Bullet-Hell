@@ -14,61 +14,25 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "7747fc75-8311-4844-90a8-6baf5b87edb4"
-            }
-          },
-          {
-            "frame": 0.08333333333333333,
-            "value": {
-              "__uuid__": "2d390518-b110-496e-9e03-480eeff2b308"
-            }
-          },
-          {
-            "frame": 0.16666666666666666,
-            "value": {
-              "__uuid__": "5fc72985-c135-4e61-9372-a3d89b8f02c6"
+              "__uuid__": "c8db1613-8c50-4b6e-9445-d9b4da20499e"
             }
           },
           {
             "frame": 0.25,
             "value": {
-              "__uuid__": "d1475904-9719-488d-a0c1-ab500bb3f4ef"
-            }
-          },
-          {
-            "frame": 0.3333333333333333,
-            "value": {
-              "__uuid__": "b23af3aa-29d4-4ad0-b790-bd6c21b0fbed"
-            }
-          },
-          {
-            "frame": 0.4166666666666667,
-            "value": {
-              "__uuid__": "07bce0ef-6453-4a22-ad62-15e4ee14fda2"
+              "__uuid__": "dc9652e8-be25-454d-b01f-966f0ae2bac7"
             }
           },
           {
             "frame": 0.5,
             "value": {
-              "__uuid__": "90de0b50-3046-4ede-af85-6cb7e9addd61"
-            }
-          },
-          {
-            "frame": 0.5833333333333334,
-            "value": {
-              "__uuid__": "7f4c6dac-7c75-48a2-b0e1-1b892e0eeddb"
-            }
-          },
-          {
-            "frame": 0.6666666666666666,
-            "value": {
-              "__uuid__": "5227051f-14e6-4b5d-bfba-57370eb52287"
+              "__uuid__": "8bd71ea3-778c-4e0a-b8c8-4ed15d48d0c2"
             }
           },
           {
             "frame": 0.75,
             "value": {
-              "__uuid__": "87ca10ab-97b1-4b93-bfb5-3cd1c0460aa7"
+              "__uuid__": "9fca5cb2-4d46-4918-a84c-f80df87c4ea5"
             }
           }
         ]
@@ -77,7 +41,7 @@
   },
   "events": [
     {
-      "frame": 0.25,
+      "frame": 0.13333333333333333,
       "func": "bulletMove",
       "params": []
     }

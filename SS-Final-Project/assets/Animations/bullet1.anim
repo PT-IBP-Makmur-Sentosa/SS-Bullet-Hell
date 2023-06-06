@@ -1,0 +1,71 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "bullet1",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.8333333333333334,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "78c3604c-59cd-4987-9128-72ada9aa8df3"
+            }
+          },
+          {
+            "frame": 0.23333333333333334,
+            "value": {
+              "__uuid__": "9fdb3950-c1be-4f80-a013-b3b8f33bb98f"
+            }
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": {
+              "__uuid__": "6646f8ec-5e29-4b35-9564-fa2df33d1c2c"
+            }
+          },
+          {
+            "frame": 0.8166666666666667,
+            "value": {
+              "__uuid__": "0bafac56-7ca6-48f1-876e-7281308b6028"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "anchorX": [
+        {
+          "frame": 0.23333333333333334,
+          "value": 0.5
+        },
+        {
+          "frame": 0.4166666666666667,
+          "value": 0.3
+        },
+        {
+          "frame": 0.8166666666666667,
+          "value": 0
+        }
+      ],
+      "height": [
+        {
+          "frame": 0,
+          "value": 22
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "frame": 0.05,
+      "func": "bulletMove",
+      "params": []
+    }
+  ]
+}
