@@ -129,4 +129,19 @@ export default class NewClass extends cc.Component {
     openShop(){
         cc.director.loadScene("Shop");
     }
+
+    public toStage(event, customEventData: string) : void {
+        if(customEventData == "1"){
+            //update firebase
+            cc.director.loadScene("Stage1")
+        }
+        else if(customEventData == "2"){
+            //update firebase
+            cc.director.loadScene("Stage2")
+        }
+        else if(customEventData == "3"){
+            //update firebase
+            cc.director.loadScene("Stage3")
+        }
+    }
 }
