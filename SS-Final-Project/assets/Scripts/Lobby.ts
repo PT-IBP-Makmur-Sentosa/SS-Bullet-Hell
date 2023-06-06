@@ -49,6 +49,7 @@ export default class NewClass extends cc.Component {
             this.currentShipIndex = userData.selectedShipIndex;
             this.availableShip = userData.shipUnLocked;
             const stagesUnlocked = userData.stage;
+            this.updateShipDisplay();
             if(stagesUnlocked[0]){
                 this.stage1Btn.node.opacity = 255;
                 this.stage1Btn.interactable = true;
@@ -86,12 +87,14 @@ export default class NewClass extends cc.Component {
         this.btnRight.node.on('click', this.rightShip, this);
         this.shopBtn.node.on('click', this.openShop, this);
         this.updateShipDisplay();
+        console.log(this.currentShipIndex)
     }
 
     // update (dt) {}
 
     leftShip() {
         this.currentShipIndex--;
+        console.log(this.currentShipIndex)
         if (this.currentShipIndex < 0) {
             this.currentShipIndex = this.shipSprites.length - 1;
         }
@@ -100,6 +103,7 @@ export default class NewClass extends cc.Component {
 
     rightShip() {
         this.currentShipIndex++;
+        console.log(this.currentShipIndex)
         if (this.currentShipIndex >= this.shipSprites.length) {
             this.currentShipIndex = 0;
         }
@@ -128,5 +132,20 @@ export default class NewClass extends cc.Component {
 
     openShop(){
         cc.director.loadScene("Shop");
+    }
+
+    public toStage(event, customEventData: string) : void {
+        if(customEventData == "1"){
+            //update firebase
+            cc.director.loadScene("Stage1")
+        }
+        else if(customEventData == "2"){
+            //update firebase
+            cc.director.loadScene("Stage2")
+        }
+        else if(customEventData == "3"){
+            //update firebase
+            cc.director.loadScene("Stage3")
+        }
     }
 }

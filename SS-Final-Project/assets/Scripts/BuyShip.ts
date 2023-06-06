@@ -51,7 +51,9 @@ export default class NewClass extends cc.Component {
                 userData.coins -= this.price;
                 userData.shipUnLocked[this.buyShipIndex] = true;
                 userRef.set(userData);
+                cc.director.emit('shipPurchased');
                 this.node.getComponent(cc.Button).interactable = false;
+                this.node.getComponent(cc.Button).node.opacity = 150;
             }else{
                 console.log("Not enough coins");
             }

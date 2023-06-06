@@ -9,12 +9,12 @@ export default class Bullet extends cc.Component {
   public isTriggered = false; // I add this to make the bullet kill one enemy at a time.
 
   // when created, the bullet need to be placed at correct position and play animation.
-  public init(node: cc.Node) {
+  public init(node: cc.Node, anim: string) {
     this.anim = this.getComponent(cc.Animation);
 
     this.setInitPos(node);
 
-    this.anim.play("bullet");
+    this.anim.play(anim);
   }
 
   // this function is called when the bullet manager calls "get" API.
@@ -29,7 +29,7 @@ export default class Bullet extends cc.Component {
     this.node.parent = node.parent; // don't mount under the player, otherwise it will change direction when player move
 
     if (node.scaleX > 0) {
-      this.node.position = cc.v3(62, 8);
+      this.node.position = cc.v3(55, 0);
 
       this.node.scaleX = 1;
     } else {
@@ -46,7 +46,7 @@ export default class Bullet extends cc.Component {
     let moveDir = null;
 
     // move bullet to 500 far from current position in 0.8s
-    if (this.node.scaleX > 0) moveDir = cc.moveBy(4, 960, 0);
+    if (this.node.scaleX > 0) moveDir = cc.moveBy(2.5, 960, 0);
     else moveDir = cc.moveBy(0.8, -300, 0);
 
     let finished = cc.callFunc(() => {
@@ -64,11 +64,11 @@ export default class Bullet extends cc.Component {
     // console.log("contact");
     this.node.stopAllActions();
     // if (other.node.group === "enemy" && other.node.name !== "bullet") {
-    if (other.node.group === "enemy"){
-      var stageManager = cc.find("StageManager").getComponent("StageManager")
-      stageManager.score += 100
-    other.node.destroy();
-      }
+    if (other.node.group === "enemy") {
+      var stageManager = cc.find("StageManager").getComponent("StageManager");
+      stageManager.score += 100;
+      other.node.destroy();
+    }
     this.unscheduleAllCallbacks();
 
     this.scheduleOnce(() => {
