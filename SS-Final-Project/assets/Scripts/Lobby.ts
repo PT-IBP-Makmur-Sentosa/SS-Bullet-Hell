@@ -86,13 +86,15 @@ export default class NewClass extends cc.Component {
         this.btnRight.node.on('click', this.rightShip, this);
         this.shopBtn.node.on('click', this.openShop, this);
         this.updateShipDisplay();
+        console.log(this.currentShipIndex)
     }
 
     // update (dt) {}
 
     leftShip() {
         this.currentShipIndex--;
-        if (this.currentShipIndex < 0) {
+        console.log(this.currentShipIndex)
+        if (this.currentShipIndex <= 0) {
             this.currentShipIndex = this.shipSprites.length - 1;
         }
         this.updateShipDisplay();
@@ -100,6 +102,7 @@ export default class NewClass extends cc.Component {
 
     rightShip() {
         this.currentShipIndex++;
+        console.log(this.currentShipIndex)
         if (this.currentShipIndex >= this.shipSprites.length) {
             this.currentShipIndex = 0;
         }
