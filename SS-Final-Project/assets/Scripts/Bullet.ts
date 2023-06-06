@@ -69,6 +69,10 @@ export default class Bullet extends cc.Component {
       stageManager.score += 100;
       other.node.destroy();
     }
+
+    if (other.node.group === "boundary") {
+      this.bulletManager.put(this.node);
+    }
     this.unscheduleAllCallbacks();
 
     this.scheduleOnce(() => {

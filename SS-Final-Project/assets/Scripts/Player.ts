@@ -53,6 +53,8 @@ class PlayerClass {
 export default class Player extends cc.Component {
   @property()
   rebornPos: cc.Vec2 = cc.v2(0, 0);
+  @property([cc.SpriteFrame])
+  shipSprites: cc.SpriteFrame[] = [];
 
   private lives: number = 10000;
   private attack: number = 0;
@@ -97,6 +99,8 @@ export default class Player extends cc.Component {
         this.currentShipIndex = userData.selectedShipIndex;
         const stagesUnlocked = userData.stage;
         cc.log("stagesUnlocked: " + stagesUnlocked);
+        this.getComponent(cc.Sprite).spriteFrame =
+          this.shipSprites[this.currentShipIndex];
         // set the player's lives and attack
         if (this.currentShipIndex == 0) {
           this.lives = PlayerClass.original().getLives();
@@ -230,13 +234,17 @@ export default class Player extends cc.Component {
   playerAnimation(): void {
     if (this.spaceDown) {
       this.schedule(this.createBullet, 0.3);
-      this.animateState = this.anim.play("shoot");
+      // this.animateState = this.anim.play("shoot");
       cc.log(this.attack);
     }
   }
 
   onBeginContact(contact, selfCollider, otherCollider): void {
-    if (otherCollider.node.group == "enemy" && !this.isReborn) {
+    if (
+      (otherCollider.node.group == "enemy" ||
+        otherCollider.node.group == "B_enemy") &&
+      !this.isReborn
+    ) {
       this.isDead = true;
       // console.log("mati");
     }
@@ -248,6 +256,7 @@ export default class Player extends cc.Component {
     if (this.bulletPool.size() > 0)
       bullet = this.bulletPool.get(this.bulletPool);
 
-    if (bullet != null) bullet.getComponent("Bullet").init(this.node);
+    if (bullet != null)
+      bullet.getComponent("Bullet").init(this.node, this.bulletanim);
   }
 }

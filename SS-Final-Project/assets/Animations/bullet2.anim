@@ -1,0 +1,65 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "bullet2",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.8333333333333334,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "206e7db5-bebb-4938-8dfb-c38d364b1948"
+            }
+          },
+          {
+            "frame": 0.23333333333333334,
+            "value": {
+              "__uuid__": "542d3b90-57f0-4411-9b1b-96ef0b7edc48"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "735a5535-f64d-4cdc-b399-03dd52fe8c16"
+            }
+          },
+          {
+            "frame": 0.8166666666666667,
+            "value": {
+              "__uuid__": "9a8ae851-7bec-483d-9daa-e8555e42cdc6"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "anchorX": [
+        {
+          "frame": 0.23333333333333334,
+          "value": 0.5
+        },
+        {
+          "frame": 0.3333333333333333,
+          "value": 0.3
+        },
+        {
+          "frame": 0.8166666666666667,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "frame": 0.016666666666666666,
+      "func": "bulletMove",
+      "params": []
+    }
+  ]
+}
