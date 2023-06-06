@@ -231,7 +231,7 @@ export default class Player extends cc.Component {
     if (this.spaceDown) {
       this.schedule(this.createBullet, 0.3);
       this.animateState = this.anim.play("shoot");
-      cc.log(this.attack);
+      // cc.log(this.attack);
     }
   }
 
@@ -248,6 +248,6 @@ export default class Player extends cc.Component {
     if (this.bulletPool.size() > 0)
       bullet = this.bulletPool.get(this.bulletPool);
 
-    if (bullet != null) bullet.getComponent("Bullet").init(this.node);
+    if (bullet != null) bullet.getComponent("Bullet").init(this.node, this.bulletanim, this.attack);
   }
 }

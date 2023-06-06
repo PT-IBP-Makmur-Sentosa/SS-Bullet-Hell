@@ -53,7 +53,7 @@ export default class EnemySpawner extends cc.Component {
     let enemyCount = 5;
     let delay = 1;
     let totalSpawned = 0;
-    const maxEnemies = 20;
+    const maxEnemies = 15;
 
     const spawnEnemy = () => {
       this.scheduleOnce(() => {

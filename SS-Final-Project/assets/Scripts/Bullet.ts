@@ -6,15 +6,19 @@ export default class Bullet extends cc.Component {
 
   private bulletManager = null;
 
+  public attack = 0;
+
   public isTriggered = false; // I add this to make the bullet kill one enemy at a time.
 
   // when created, the bullet need to be placed at correct position and play animation.
-  public init(node: cc.Node, anim: string) {
+  public init(node: cc.Node, anim: string, attack:number) {
     this.anim = this.getComponent(cc.Animation);
 
     this.setInitPos(node);
 
     this.anim.play(anim);
+
+    this.attack = attack;
   }
 
   // this function is called when the bullet manager calls "get" API.
@@ -65,9 +69,9 @@ export default class Bullet extends cc.Component {
     this.node.stopAllActions();
     // if (other.node.group === "enemy" && other.node.name !== "bullet") {
     if (other.node.group === "enemy") {
-      var stageManager = cc.find("StageManager").getComponent("StageManager");
-      stageManager.score += 100;
-      other.node.destroy();
+      // var stageManager = cc.find("StageManager").getComponent("StageManager");
+      // stageManager.score += 100;
+      // other.node.destroy();
     }
     this.unscheduleAllCallbacks();
 

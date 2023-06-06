@@ -23,7 +23,7 @@
         "__id__": 72
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": null,
     "_opacity": 255,
@@ -1034,8 +1034,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42,
-      "height": 47
+      "width": 14,
+      "height": 22
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1087,7 +1087,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "7f48bc38-8195-4ccc-adb0-437a0e83dbc4"
+      "__uuid__": "e67f4ae5-2120-4a8f-8cbc-f24ea9c589f6"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1100,7 +1100,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "6f20b9a1-ccfe-4750-9f18-58d73956ee28"
+    },
     "_id": "c0N2DgqmxNCL7pPAD/cl4I"
   },
   {
@@ -1352,7 +1354,6 @@
       "x": -200,
       "y": 0
     },
-    "lives": 3,
     "bulletPrefab": {
       "__uuid__": "aca0df12-4565-498f-b102-5dd74a41f06c"
     },
@@ -3232,10 +3233,12 @@
     "enemyPrefab": {
       "__uuid__": "a2799d13-b7d2-4ea0-817b-2c493afae5b0"
     },
-    "bulletPrefab": {
-      "__uuid__": "a95539ec-83bb-4cca-92fb-bc3821fa44fe"
+    "enemyPrefab2": {
+      "__uuid__": "20f10e10-b1f0-47c4-94e7-de38892a4144"
     },
-    "playerNode": null,
+    "enemyPrefab3": {
+      "__uuid__": "406a66ef-9a1c-47f0-9236-4375477d722a"
+    },
     "_id": "9bcu57CA1Aqph9F5q/hySE"
   }
 ]

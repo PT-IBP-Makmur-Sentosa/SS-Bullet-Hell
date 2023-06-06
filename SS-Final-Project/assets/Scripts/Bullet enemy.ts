@@ -7,7 +7,7 @@ export default class EnemyBullet extends cc.Component {
     if (otherGroup === 'boundary') {
       // Destroy the bullet when collided with the boundary
       this.node.destroy();
-      console.log('destroy bullet enemy group');
+      // console.log('destroy bullet enemy group');
     }
   }
 }
