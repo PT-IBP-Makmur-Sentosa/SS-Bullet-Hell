@@ -1354,6 +1354,23 @@
       "x": -200,
       "y": 0
     },
+    "shipSprites": [
+      {
+        "__uuid__": "7f48bc38-8195-4ccc-adb0-437a0e83dbc4"
+      },
+      {
+        "__uuid__": "5ef927e2-f8b7-4bbe-8f8c-a454fa7675da"
+      },
+      {
+        "__uuid__": "905f1630-0fb3-4734-9a47-71d4e4168369"
+      },
+      {
+        "__uuid__": "40c3de30-994f-4094-8b55-1b8fb8aad8c0"
+      },
+      {
+        "__uuid__": "fc8b268d-9770-4ea4-9ab0-f7c9b13309bf"
+      }
+    ],
     "bulletPrefab": {
       "__uuid__": "aca0df12-4565-498f-b102-5dd74a41f06c"
     },
@@ -1369,9 +1386,7 @@
     "_enabled": true,
     "_defaultClip": null,
     "_clips": [
-      {
-        "__uuid__": "8bb3ab18-9065-4b9b-b180-995efb03849f"
-      },
+      null,
       {
         "__uuid__": "6a9cb343-40c4-46f7-a4ca-b715a79a6f76"
       }
@@ -2588,7 +2603,7 @@
       "__id__": 6
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 59
@@ -2717,7 +2732,7 @@
       "__id__": 6
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 62
@@ -2846,7 +2861,7 @@
       "__id__": 6
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 65
@@ -2975,7 +2990,7 @@
       "__id__": 6
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 68
