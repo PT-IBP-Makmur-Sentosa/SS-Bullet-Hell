@@ -92,7 +92,7 @@ export default class Player extends cc.Component {
 // cc.PhysicsManager.DrawBits.e_shapeBit;
 
     this.bulletPool = new cc.NodePool("Bullet");
-    let maxBulletNum = 20;
+    let maxBulletNum = 500;
     for (let i: number = 0; i < maxBulletNum; i++) {
       let bullet = cc.instantiate(this.bulletPrefab);
       this.bulletPool.put(bullet);
