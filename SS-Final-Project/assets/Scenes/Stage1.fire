@@ -160,6 +160,9 @@
     "gameover": {
       "__id__": 90
     },
+    "bulletPrefab": {
+      "__uuid__": "a95539ec-83bb-4cca-92fb-bc3821fa44fe"
+    },
     "_id": "78nL+WQ2JJAb68RHuYMrsM"
   },
   {
