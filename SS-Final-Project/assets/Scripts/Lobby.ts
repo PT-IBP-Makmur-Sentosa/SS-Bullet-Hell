@@ -7,6 +7,46 @@
 declare const firebase: any;
 const {ccclass, property} = cc._decorator;
 
+class PlayerClass {
+    private attack: number;
+    private lives: number;
+    private skill: string;
+  
+    constructor(attack: number, lives: number, skill: string) {
+      this.attack = attack;
+      this.lives = lives;
+      this.skill = skill;
+    }
+  
+    public getAttack(): number {
+      return this.attack;
+    }
+  
+    public getLives(): number {
+      return this.lives;
+    }
+  
+    public getSkill(): string {
+      return this.skill;
+    }
+  
+    public static original(): PlayerClass {
+      return new PlayerClass(3, 3, "extra attack damage(+1 ATK)");
+    }
+    public static plane1(): PlayerClass {
+      return new PlayerClass(4, 2, "invincible");
+    }
+    public static plane2(): PlayerClass {
+      return new PlayerClass(2, 6, "extra attack speed(-0.05 interval)");
+    }
+    public static plane3(): PlayerClass {
+      return new PlayerClass(5, 3, "extra HP(+1 HP)");
+    }
+    public static plane4(): PlayerClass {
+      return new PlayerClass(4, 4, "double attack(2x ATK)");
+    }
+  }
+
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -37,8 +77,19 @@ export default class NewClass extends cc.Component {
     @property(cc.Sprite)
     loading: cc.Sprite = null;
 
-    // LIFE-CYCLE CALLBACKS:
+    @property(cc.Label)
+    attackLabel: cc.Label = null;
 
+    @property(cc.Label)
+    livesLabel: cc.Label = null;
+
+    @property(cc.Label)
+    skillLabel: cc.Label = null;
+
+    // LIFE-CYCLE CALLBACKS:
+    private lives: number = 10000;
+    private attack: number = 0;
+    private skill: string = "";
     
     private currentShipIndex: number = 0;
     private availableShip: Array<boolean> = [true, false, false, false, false];
@@ -51,9 +102,13 @@ export default class NewClass extends cc.Component {
             this.loading.node.active = false;
             const userData = snapshot.val();
             this.currentShipIndex = userData.selectedShipIndex;
+            this.attackLabel.string = "Attack: " + this.attack.toString();
+            this.livesLabel.string = "Lives: " + this.lives.toString();
+            this.skillLabel.string = this.skill;
             this.availableShip = userData.shipUnLocked;
             const stagesUnlocked = userData.stage;
             this.updateShipDisplay();
+            this.updateShipStats();
             if(stagesUnlocked[0]){
                 this.stage1Btn.node.opacity = 255;
                 this.stage1Btn.interactable = true;
@@ -94,7 +149,11 @@ export default class NewClass extends cc.Component {
         console.log(this.currentShipIndex)
     }
 
-    // update (dt) {}
+    update (dt) {
+            this.attackLabel.string = "Attack: " + (this.attack == 999 ? "???" : this.attack.toString());
+            this.livesLabel.string = "Lives: " + (this.lives == 999 ? "???" : this.lives.toString());
+            this.skillLabel.string = this.skill;
+    }
 
     leftShip() {
         this.currentShipIndex--;
@@ -103,6 +162,7 @@ export default class NewClass extends cc.Component {
             this.currentShipIndex = this.shipSprites.length - 1;
         }
         this.updateShipDisplay();
+        this.updateShipStats();
     }
 
     rightShip() {
@@ -112,6 +172,7 @@ export default class NewClass extends cc.Component {
             this.currentShipIndex = 0;
         }
         this.updateShipDisplay();
+        this.updateShipStats();
     }
 
     updateShipDisplay() {
@@ -132,6 +193,44 @@ export default class NewClass extends cc.Component {
         this.renderShipSprite.node.stopAllActions();
         this.renderShipSprite.node.opacity = 0; // Set initial opacity to 0
         this.renderShipSprite.node.runAction(cc.sequence(fadeOut, cc.delayTime(0.1), fadeIn));
+    }
+
+    updateShipStats(){
+        if(this.availableShip[this.currentShipIndex]){
+            switch (this.currentShipIndex) {
+                case 0:
+                    this.attack = PlayerClass.original().getAttack();
+                    this.lives = PlayerClass.original().getLives();
+                    this.skill = PlayerClass.original().getSkill();
+                    break;
+                case 1:
+                    this.attack = PlayerClass.plane1().getAttack();
+                    this.lives = PlayerClass.plane1().getLives();
+                    this.skill = PlayerClass.plane1().getSkill();
+                    break;
+                case 2:
+                    this.attack = PlayerClass.plane2().getAttack();
+                    this.lives = PlayerClass.plane2().getLives();
+                    this.skill = PlayerClass.plane2().getSkill();
+                    break;
+                case 3:
+                    this.attack = PlayerClass.plane3().getAttack();
+                    this.lives = PlayerClass.plane3().getLives();
+                    this.skill = PlayerClass.plane3().getSkill();
+                    break;
+                case 4:
+                    this.attack = PlayerClass.plane4().getAttack();
+                    this.lives = PlayerClass.plane4().getLives();
+                    this.skill = PlayerClass.plane4().getSkill();
+                    break;
+            }
+        }
+        else{
+            this.attack = 999;
+            this.lives = 999;
+            this.skill = "???";
+        }
+
     }
 
     openShop(){
