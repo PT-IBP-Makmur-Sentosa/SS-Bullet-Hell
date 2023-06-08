@@ -22,11 +22,29 @@ export default class StageManager extends cc.Component {
     scoreLabel: cc.Label = null;
     @property
     score: number = 0;
+    @property(cc.Node)
+    loading = null;
+    @property(cc.Node)
+    enemy = null;
+    @property(cc.Node)
+    gameover = null;
 
 
     // LIFE-CYCLE CALLBACKS:
+    gameOver() {
+        this.gameover.active = true
+        this.enemy.active = false
+        this.scheduleOnce(function () {
+            cc.director.loadScene("Lobby")
+        } , 2)
+    }
 
-    // onLoad () {}
+    onLoad () {
+        this.scheduleOnce(function () {
+            this.loading.active = false;
+            this.enemy.active = true;
+        }, 2)
+    }
 
     start () {
         this.stageLabel.string = this.stageName;

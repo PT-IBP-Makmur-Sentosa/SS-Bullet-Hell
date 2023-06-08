@@ -20,7 +20,7 @@ export default class EnemySpawner extends cc.Component {
     this.isAlive = false;
 
     this.enemyPool = new cc.NodePool();
-    const initialEnemyCount = 10;
+    const initialEnemyCount = 100;
     for (let i = 0; i < initialEnemyCount; i++) {
       const enemy = cc.instantiate(this.enemyPrefab);
       this.enemyPool.put(enemy);
@@ -48,12 +48,17 @@ export default class EnemySpawner extends cc.Component {
     // Implement your player showing logic here
   }
 
+  pooling(enemy: cc.Node, HP: number, baseHP: number) {
+    this.enemyPool.put(enemy);
+    // HP = baseHP
+  }
+
   spawn(): void {
     this.isAlive = true;
-    let enemyCount = 5;
+    let enemyCount = 4;
     let delay = 1;
     let totalSpawned = 0;
-    const maxEnemies = 15;
+    const maxEnemies = 16;
 
     const spawnEnemy = () => {
       this.scheduleOnce(() => {
@@ -121,7 +126,7 @@ export default class EnemySpawner extends cc.Component {
   moveEnemy(enemy: cc.Node): void {
     const delayAction = cc.delayTime(1); // Adjust the delay duration
 
-    var time = Math.random() * (6) + 4;
+    var time = Math.random() * (4) + 2;
     const moveAction = cc.moveBy(time, cc.v2(-1000, 0)); // Adjust the duration and distance
 
     const destroyAction = cc.callFunc(() => {

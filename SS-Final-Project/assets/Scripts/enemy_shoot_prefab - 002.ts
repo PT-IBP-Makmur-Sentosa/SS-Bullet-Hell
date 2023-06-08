@@ -9,11 +9,11 @@ export default class EnemyShooter extends cc.Component {
   @property({ type: cc.Prefab })
   private bulletPrefab: cc.Prefab = null;
 
-  private enemyHP: number = 5; // HP property for the enemy
+  private enemyHP: number = 8; // HP property for the enemy
 
   private enemyShootInterval: number = 1.5;
-  private minBulletCount: number = 3; // Minimum number of bullets to shoot
-  private maxBulletCount: number = 5; // Maximum number of bullets to shoot
+  private minBulletCount: number = 2; // Minimum number of bullets to shoot
+  private maxBulletCount: number = 4; // Maximum number of bullets to shoot
 
   onLoad() {
     this.scheduleShoot();
@@ -52,26 +52,36 @@ export default class EnemyShooter extends cc.Component {
       const angleRadians = Math.atan2(bulletDirection.y, bulletDirection.x);
       const angleDegrees = cc.misc.radiansToDegrees(angleRadians);
 
-      bullet.rotation = -angleDegrees; // Reverse the angle for proper rotation
+      bullet.angle = -angleDegrees; // Reverse the angle for proper rotation
 
       this.node.parent.addChild(bullet);
     }
   }
 
+  first = false;
   onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
     const otherGroup = otherCollider.node.group;
-    if (otherGroup === 'B_player') {
+    if (otherGroup === 'B_player' && !this.first) {
+      this.first = true
       // Decrease enemy HP when collided with the player
       var attack = 0;
       attack = otherCollider.getComponent("Bullet").attack;
       this.enemyHP -= attack;
-      if (this.enemyHP > 0 || this.enemyHP < 29) {console.log(this.enemyHP);}
+      this.scheduleOnce(function () {
+        this.first = false
+      }, 0.05)
+      //if (this.enemyHP > 0 || this.enemyHP < 29) {console.log(this.enemyHP);}
       if (this.enemyHP <= 0) {
+        this.scheduleOnce(function () {
+          this.enemyHP = 8
+        }, 0.1)
         // Destroy the enemy when HP reaches 0 or below
-        this.node.destroy();
-        console.log('Enemy destroyed');
+        var spawner = cc.find("New Node")
+        spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 8)
+        //this.node.destroy();
+        //console.log('Enemy destroyed');
         var stageManager = cc.find("StageManager").getComponent("StageManager");
-        stageManager.score += 100;
+        stageManager.score += 500;
       }
     }
   }
