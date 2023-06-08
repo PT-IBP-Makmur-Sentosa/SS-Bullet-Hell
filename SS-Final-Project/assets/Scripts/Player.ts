@@ -87,9 +87,9 @@ export default class Player extends cc.Component {
     cc.director.getPhysicsManager().enabled = true;
     cc.director.getCollisionManager().enabled = true;
 
-//     cc.director.getPhysicsManager().debugDrawFlags =
-// cc.PhysicsManager.DrawBits.e_jointBit |
-// cc.PhysicsManager.DrawBits.e_shapeBit;
+    //     cc.director.getPhysicsManager().debugDrawFlags =
+    // cc.PhysicsManager.DrawBits.e_jointBit |
+    // cc.PhysicsManager.DrawBits.e_shapeBit;
 
     this.bulletPool = new cc.NodePool("Bullet");
     let maxBulletNum = 500;
@@ -107,9 +107,11 @@ export default class Player extends cc.Component {
         this.currentShipIndex = userData.selectedShipIndex;
         const stagesUnlocked = userData.stage;
         cc.log("stagesUnlocked: " + stagesUnlocked);
-        this.getComponent(cc.Sprite).spriteFrame = this.shipSprites[this.currentShipIndex];
-        this.getComponent(cc.PhysicsPolygonCollider).points = this.shipCollider[this.currentShipIndex].points;
-        this.getComponent(cc.PhysicsPolygonCollider).apply()
+        this.getComponent(cc.Sprite).spriteFrame =
+          this.shipSprites[this.currentShipIndex];
+        this.getComponent(cc.PhysicsPolygonCollider).points =
+          this.shipCollider[this.currentShipIndex].points;
+        this.getComponent(cc.PhysicsPolygonCollider).apply();
         // set the player's lives and attack
         if (this.currentShipIndex == 0) {
           this.lives = PlayerClass.original().getLives();
@@ -183,7 +185,7 @@ export default class Player extends cc.Component {
     }
     if (event.keyCode == cc.macro.KEY.space) {
       this.spaceDown = false;
-      this.once = false
+      this.once = false;
       //unschedule the bullet
       this.unschedule(this.createBullet);
     }
@@ -199,9 +201,9 @@ export default class Player extends cc.Component {
 
     // the player move vertically
     if (this.wDown) {
-      this.node.y += this.playerSpeed * 2 / 3 * dt;
+      this.node.y += ((this.playerSpeed * 2) / 3) * dt;
     } else if (this.sDown) {
-      this.node.y -= this.playerSpeed * 2 / 3 * dt;
+      this.node.y -= ((this.playerSpeed * 2) / 3) * dt;
     }
 
     // set the boundary of the player
@@ -219,7 +221,7 @@ export default class Player extends cc.Component {
 
   playerReborn(dt): void {
     if (this.isDead && !this.isReborn && this.lives > 0) {
-      this.resetPosition();
+      // this.resetPosition();
       this.isReborn = true;
       this.lives--;
       var stageManager = cc.find("StageManager").getComponent("StageManager");
@@ -235,48 +237,55 @@ export default class Player extends cc.Component {
         this.getComponent(cc.PhysicsPolygonCollider).enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
-      cc.find("StageManager").getComponent("StageManager").gameOver()
-      this.node.active = false
+      cc.find("StageManager").getComponent("StageManager").gameOver();
+      this.node.active = false;
     }
   }
 
-  resetPosition(): void {
-    this.node.setPosition(this.rebornPos);
-  }
+  // resetPosition(): void {
+  //   this.node.setPosition(this.rebornPos);
+  // }
 
   playerAnimation(): void {
     if (this.spaceDown && !this.once) {
-      this.once = true
-      this.createBullet()
+      this.once = true;
+      this.createBullet();
       this.schedule(this.createBullet, 0.3);
       // this.animateState = this.anim.play("shoot");
       // cc.log(this.attack);
     }
+    if (this.wDown || this.sDown) {
+      this.anim.play("player_updown");
+    }
+    if (this.dDown) {
+      this.anim.play("player_acc");
+    }
   }
 
   onBeginContact(contact, selfCollider, otherCollider): void {
-      if (
-        (otherCollider.node.group == "enemy" ||
-          otherCollider.node.group == "B_enemy") &&
-        !this.isReborn
-      ) {
-        this.isDead = true;
+    if (
+      (otherCollider.node.group == "enemy" ||
+        otherCollider.node.group == "B_enemy") &&
+      !this.isReborn
+    ) {
+      this.isDead = true;
       // console.log("mati")
       //enable isdead
     }
-
   }
 
   private createBullet() {
     let bullet = null;
 
-    if (this.bulletPool.size() > 0){
+    if (this.bulletPool.size() > 0) {
       bullet = this.bulletPool.get(this.bulletPool);
       //this.node.addChild(bullet);
     }
 
     if (bullet != null) {
-      bullet.getComponent("Bullet").init(this.node, this.bulletanim, this.attack);
+      bullet
+        .getComponent("Bullet")
+        .init(this.node, this.bulletanim, this.attack);
       //this.node.addChild(bullet);
     }
   }

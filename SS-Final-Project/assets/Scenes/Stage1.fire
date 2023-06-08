@@ -1073,7 +1073,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -200,
+        -193,
         0,
         0,
         0,
@@ -1093,7 +1093,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_is3DNode": false,
+    "_is3DNode": true,
     "_groupIndex": 1,
     "groupIndex": 1,
     "_id": "d0Xv6ccMNJrZJH6dBEbg52"
@@ -2351,9 +2351,14 @@
     "_enabled": true,
     "_defaultClip": null,
     "_clips": [
-      null,
       {
         "__uuid__": "6a9cb343-40c4-46f7-a4ca-b715a79a6f76"
+      },
+      {
+        "__uuid__": "c809a1c4-bc47-4ff0-861c-4ede2a68f8ad"
+      },
+      {
+        "__uuid__": "800d0bf9-985c-4da0-b710-3bc65ecaf7a1"
       }
     ],
     "playOnLoad": false,
@@ -2976,7 +2981,7 @@
         "__id__": 57
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 60
