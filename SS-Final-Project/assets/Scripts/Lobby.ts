@@ -141,14 +141,38 @@ export default class NewClass extends cc.Component {
     public toStage(event, customEventData: string) : void {
         if(customEventData == "1"){
             //update firebase
+            if(this.availableShip[this.currentShipIndex]){
+                const user = firebase.auth().currentUser;
+                const db = firebase.database();
+                const userRef = db.ref('users/' + user?.uid);
+                userRef.update({
+                    selectedShipIndex: this.currentShipIndex,
+                })
+            }
             cc.director.loadScene("Stage1")
         }
         else if(customEventData == "2"){
             //update firebase
+            if(this.availableShip[this.currentShipIndex]){
+                const user = firebase.auth().currentUser;
+                const db = firebase.database();
+                const userRef = db.ref('users/' + user?.uid);
+                userRef.update({
+                    selectedShipIndex: this.currentShipIndex,
+                })
+            }
             cc.director.loadScene("Stage2")
         }
         else if(customEventData == "3"){
             //update firebase
+            if(this.availableShip[this.currentShipIndex]){
+                const user = firebase.auth().currentUser;
+                const db = firebase.database();
+                const userRef = db.ref('users/' + user?.uid);
+                userRef.update({
+                    selectedShipIndex: this.currentShipIndex,
+                })
+            }
             cc.director.loadScene("Stage3")
         }
     }

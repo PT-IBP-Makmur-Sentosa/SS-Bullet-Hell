@@ -50,7 +50,7 @@ export default class Bullet extends cc.Component {
     let moveDir = null;
 
     // move bullet to 500 far from current position in 0.8s
-    if (this.node.scaleX > 0) moveDir = cc.moveBy(2.5, 960, 0);
+    if (this.node.scaleX > 0) moveDir = cc.moveBy(3, 1500, 0);
     else moveDir = cc.moveBy(0.8, -300, 0);
 
     let finished = cc.callFunc(() => {
@@ -65,24 +65,27 @@ export default class Bullet extends cc.Component {
 
   //detect collision with enemies
   onBeginContact(contact, self, other) {
-    console.log("contact");
+    //console.log("contact");
     this.node.stopAllActions();
     // if (other.node.group === "enemy" && other.node.name !== "bullet") {
     if (other.node.group === "enemy") {
       // var stageManager = cc.find("StageManager").getComponent("StageManager");
       // stageManager.score += 100;
       // other.node.destroy();
-    }
-
-    if (other.node.group === "boundary") {
-      this.bulletManager.put(this.node);
-    }
-    this.unscheduleAllCallbacks();
-
-    this.scheduleOnce(() => {
+      this.unscheduleAllCallbacks();
       this.anim.stop();
-
       this.bulletManager.put(this.node);
-    }, 0.1); // for better animation effect, I delay 0.1s when bullet hits the enemy
+      // this.scheduleOnce(() => {
+      //   this.anim.stop();
+  
+      //   this.bulletManager.put(this.node);
+      // }, 0.1); // for better animation effect, I delay 0.1s when bullet hits the enemy
+    
+    }
+
+    if (other.node.group === "boundary" && other.tag === 1) {
+      this.anim.stop();
+      this.bulletManager.put(this.node);
+    }
   }
 }

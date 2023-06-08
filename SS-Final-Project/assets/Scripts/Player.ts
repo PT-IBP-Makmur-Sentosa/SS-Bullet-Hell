@@ -55,6 +55,8 @@ export default class Player extends cc.Component {
   rebornPos: cc.Vec2 = cc.v2(0, 0);
   @property([cc.SpriteFrame])
   shipSprites: cc.SpriteFrame[] = [];
+  @property([cc.PolygonCollider])
+  shipCollider = [];
 
   private lives: number = 10000;
   private attack: number = 0;
@@ -69,9 +71,11 @@ export default class Player extends cc.Component {
   private aDown: boolean = false;
   private sDown: boolean = false;
   private dDown: boolean = false;
-  private playerSpeed: number = 150;
+  @property
+  playerSpeed: number = 150;
   private isDead: boolean = false;
   private isReborn: boolean = false;
+  private once: boolean = false;
   private rebornTime: number = 2;
   private spaceDown: boolean = false;
   private anim = null; //this will use to get animation component
@@ -82,6 +86,10 @@ export default class Player extends cc.Component {
     this.anim = this.getComponent(cc.Animation);
     cc.director.getPhysicsManager().enabled = true;
     cc.director.getCollisionManager().enabled = true;
+
+//     cc.director.getPhysicsManager().debugDrawFlags =
+// cc.PhysicsManager.DrawBits.e_jointBit |
+// cc.PhysicsManager.DrawBits.e_shapeBit;
 
     this.bulletPool = new cc.NodePool("Bullet");
     let maxBulletNum = 20;
@@ -100,6 +108,8 @@ export default class Player extends cc.Component {
         const stagesUnlocked = userData.stage;
         cc.log("stagesUnlocked: " + stagesUnlocked);
         this.getComponent(cc.Sprite).spriteFrame = this.shipSprites[this.currentShipIndex];
+        this.getComponent(cc.PhysicsPolygonCollider).points = this.shipCollider[this.currentShipIndex].points;
+        this.getComponent(cc.PhysicsPolygonCollider).apply()
         // set the player's lives and attack
         if (this.currentShipIndex == 0) {
           this.lives = PlayerClass.original().getLives();
@@ -153,7 +163,7 @@ export default class Player extends cc.Component {
     if (event.keyCode == cc.macro.KEY.d) {
       this.dDown = true;
     }
-    if (event.keyCode == cc.macro.KEY.space) {
+    if (event.keyCode == cc.macro.KEY.space && !this.once) {
       this.spaceDown = true;
     }
   }
@@ -173,6 +183,7 @@ export default class Player extends cc.Component {
     }
     if (event.keyCode == cc.macro.KEY.space) {
       this.spaceDown = false;
+      this.once = false
       //unschedule the bullet
       this.unschedule(this.createBullet);
     }
@@ -188,9 +199,9 @@ export default class Player extends cc.Component {
 
     // the player move vertically
     if (this.wDown) {
-      this.node.y += this.playerSpeed * dt;
+      this.node.y += this.playerSpeed * 2 / 3 * dt;
     } else if (this.sDown) {
-      this.node.y -= this.playerSpeed * dt;
+      this.node.y -= this.playerSpeed * 2 / 3 * dt;
     }
 
     // set the boundary of the player
@@ -199,10 +210,10 @@ export default class Player extends cc.Component {
     } else if (this.node.x > cc.winSize.width / 2 - this.node.width / 2) {
       this.node.x = cc.winSize.width / 2 - this.node.width / 2;
     }
-    if (this.node.y < -cc.winSize.height / 2 + this.node.height / 2) {
-      this.node.y = -cc.winSize.height / 2 + this.node.height / 2;
-    } else if (this.node.y > cc.winSize.height / 2 - this.node.height / 2) {
-      this.node.y = cc.winSize.height / 2 - this.node.height / 2;
+    if (this.node.y < -580 / 2 + this.node.height / 2) {
+      this.node.y = -580 / 2 + this.node.height / 2;
+    } else if (this.node.y > 580 / 2 - this.node.height / 2) {
+      this.node.y = 580 / 2 - this.node.height / 2;
     }
   }
 
@@ -213,16 +224,19 @@ export default class Player extends cc.Component {
       this.lives--;
       var stageManager = cc.find("StageManager").getComponent("StageManager");
       stageManager.health = this.lives;
-      cc.log("lives: " + this.lives);
+      //cc.log("lives: " + this.lives);
       this.anim.play("hit");
+      this.getComponent(cc.PhysicsPolygonCollider).enabled = false;
       this.scheduleOnce(() => {
         this.isReborn = false;
         this.isDead = false;
 
         this.anim.stop("hit");
+        this.getComponent(cc.PhysicsPolygonCollider).enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
-      this.node.destroy();
+      cc.find("StageManager").getComponent("StageManager").gameOver()
+      this.node.active = false
     }
   }
 
@@ -231,7 +245,9 @@ export default class Player extends cc.Component {
   }
 
   playerAnimation(): void {
-    if (this.spaceDown) {
+    if (this.spaceDown && !this.once) {
+      this.once = true
+      this.createBullet()
       this.schedule(this.createBullet, 0.3);
       // this.animateState = this.anim.play("shoot");
       // cc.log(this.attack);
@@ -245,7 +261,8 @@ export default class Player extends cc.Component {
         !this.isReborn
       ) {
         this.isDead = true;
-      // console.log("mati");
+      // console.log("mati")
+      //enable isdead
     }
 
   }
@@ -253,9 +270,14 @@ export default class Player extends cc.Component {
   private createBullet() {
     let bullet = null;
 
-    if (this.bulletPool.size() > 0)
+    if (this.bulletPool.size() > 0){
       bullet = this.bulletPool.get(this.bulletPool);
+      this.node.addChild(bullet);
+    }
 
-    if (bullet != null) bullet.getComponent("Bullet").init(this.node, this.bulletanim, this.attack);
+    if (bullet != null) {
+      bullet.getComponent("Bullet").init(this.node, this.bulletanim, this.attack);
+      this.node.addChild(bullet);
+    }
   }
 }

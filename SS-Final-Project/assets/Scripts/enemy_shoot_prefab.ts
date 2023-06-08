@@ -6,7 +6,7 @@ export default class EnemyShooter extends cc.Component {
   private bulletPrefab: cc.Prefab = null;
 
   private enemyShootInterval: number = 1.5;
-  private enemyHP: number = 9; // HP property for the enemy
+  private enemyHP: number = 4; // HP property for the enemy
 
   onLoad() {
     this.scheduleShoot();
@@ -36,18 +36,28 @@ export default class EnemyShooter extends cc.Component {
     this.node.parent.addChild(bullet);
   }
 
+  first = false;
   onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
     const otherGroup = otherCollider.node.group;
-    if (otherGroup === 'B_player') {
+    if (otherGroup === 'B_player' && !this.first) {
+      this.first = true
       // Decrease enemy HP when collided with the player
       var attack = 0;
       attack = otherCollider.getComponent("Bullet").attack;
       this.enemyHP -= attack;
-      if (this.enemyHP > 0 || this.enemyHP < 3) {console.log(this.enemyHP);}
+      this.scheduleOnce(function () {
+        this.first = false
+      }, 0.1)
+      //if (this.enemyHP > 0 || this.enemyHP < 29) {console.log(this.enemyHP);}
       if (this.enemyHP <= 0) {
+        this.scheduleOnce(function () {
+          this.enemyHP = 4
+        }, 0.1)
         // Destroy the enemy when HP reaches 0 or below
-        this.node.destroy();
-        console.log('Enemy destroyed');
+        var spawner = cc.find("New Node")
+        spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 4)
+        //this.node.destroy();
+        //console.log('Enemy destroyed');
         var stageManager = cc.find("StageManager").getComponent("StageManager");
         stageManager.score += 100;
       }
