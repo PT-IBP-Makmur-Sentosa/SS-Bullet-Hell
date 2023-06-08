@@ -890,7 +890,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Button",
+    "_name": "PlusButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -1294,7 +1294,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Button copy",
+    "_name": "PlusButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -1698,7 +1698,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Button copy",
+    "_name": "MinusButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -2102,7 +2102,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Button copy",
+    "_name": "MinusButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1

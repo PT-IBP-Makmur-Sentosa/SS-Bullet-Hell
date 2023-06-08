@@ -37,35 +37,35 @@ export default class level_1 extends cc.Component {
     // mario: Player;
     private count: number = 0;
     
-    private Win: boolean = false;    
+    // private Win: boolean = false;    
 
-    // remain_lives: number = 0;
-    levelText: cc.Label;
-    timeText: cc.Label;
+    // // remain_lives: number = 0;
+    // levelText: cc.Label;
+    // timeText: cc.Label;
 
-    gameLevel = 1;
-    remainTime = 300; // 300 second
-    gameover: boolean = false;
+    // gameLevel = 1;
+    // remainTime = 300; // 300 second
+    // gameover: boolean = false;
     
-    initProperties(){
-        this.levelText = cc.find("Canvas/Main Camera/level1/TopContent/Level_one/level").getComponent(cc.Label);
-        this.timeText = cc.find("Canvas/Main Camera/level1/TopContent/Time/time").getComponent(cc.Label);
-    }
+    // initProperties(){
+    //     this.levelText = cc.find("Canvas/Main Camera/level1/TopContent/Level_one/level").getComponent(cc.Label);
+    //     this.timeText = cc.find("Canvas/Main Camera/level1/TopContent/Time/time").getComponent(cc.Label);
+    // }
 
 
-    updateUI(dt){
-        this.levelText.string = this.gameLevel.toString();
+    // updateUI(dt){
+    //     this.levelText.string = this.gameLevel.toString();
 
-        if(!this.Win){
+    //     if(!this.Win){
 
-            this.remainTime -= dt;
-            if(this.remainTime < 0){
-                this.remainTime = 0;
-            }
-        }
-        // this.timeText.string = this.remainTime.toString();
-        this.timeText.string = this.remainTime.toFixed(0).toString().replace(".", ":");
-    }
+    //         this.remainTime -= dt;
+    //         if(this.remainTime < 0){
+    //             this.remainTime = 0;
+    //         }
+    //     }
+    //     // this.timeText.string = this.remainTime.toString();
+    //     this.timeText.string = this.remainTime.toFixed(0).toString().replace(".", ":");
+    // }
 
     // private count : number = 0;
 
@@ -77,23 +77,23 @@ export default class level_1 extends cc.Component {
 
     }
 
-    stopBGM(){
-        // ===================== TODO =====================
-        // 1. Stop music. 
-        cc.audioEngine.pauseMusic();
-        // ================================================
-    }
+    // stopBGM(){
+    //     // ===================== TODO =====================
+    //     // 1. Stop music. 
+    //     // cc.audioEngine.pauseMusic();
+    //     // ================================================
+    // }
     resumeBGM(){
         cc.audioEngine.resumeMusic();
     }
 
-    playEffect(){
-        // ===================== TODO =====================
-        // 1. Play sound effect. The audio clip to play is 
-        cc.log("Click.");
-        cc.audioEngine.playEffect(this.touch_coin, false);
-        // ================================================
-    }
+    // playEffect(){
+    //     // ===================== TODO =====================
+    //     // 1. Play sound effect. The audio clip to play is 
+    //     cc.log("Click.");
+    //     cc.audioEngine.playEffect(this.touch_coin, false);
+    //     // ================================================
+    // }
 
     Toggle_init(){
         let checkEventHandler = new cc.Component.EventHandler();
@@ -140,12 +140,7 @@ export default class level_1 extends cc.Component {
         cc.director.loadScene("setting");
     }
 
-    // EnablePause(){
-    //     cc.find("Canvas/Main Camera/level1/UI/Pausebtn").on('click', this.Pause ,  this);
-    // }
-    // OFFPause(){
-    //     cc.find("Canvas/Main Camera/level1/UI/Pausebtn").getComponent(cc.Button).onDisable();
-    // }
+
 
 
     Pause(event, customEventData) {
@@ -164,97 +159,120 @@ export default class level_1 extends cc.Component {
                 // Init resume btns.
                 this.resume_init();
 
-                cc.log("Pause");
-                this.stopBGM();
+                console.log("pause"); 
+                // this.stopBGM();
                 cc.director.pause();
             }else{
                 cc.log("Cannot press Pause since Now pausing.");
             }
     }
 
-    win(){
-        cc.log("win");
-        this.stopBGM();
-        // stop timer.
-        this.Win = true;
+    // win(){
+    //     cc.log("win");
+    //     this.stopBGM();
+    //     // stop timer.
+    //     this.Win = true;
 
 
-        cc.audioEngine.playMusic(this.victory, false);
-        var user = firebase.auth().currentUser;
+    //     cc.audioEngine.playMusic(this.victory, false);
+    //     var user = firebase.auth().currentUser;
 
 
-        // num_of_times ++;
-        firebase.database().ref('Users/'+user.displayName+'/num_of_times').once('value',(snapshot)=>{
-             // get current time, then increment it by one.
-                firebase.database().ref('Users/'+user.displayName).update({
-                    num_of_times: snapshot.val()+ 1
-                }).then(()=>{
-                    // Log score data.
+    //     // num_of_times ++;
+    //     firebase.database().ref('Users/'+user.displayName+'/num_of_times').once('value',(snapshot)=>{
+    //          // get current time, then increment it by one.
+    //             firebase.database().ref('Users/'+user.displayName).update({
+    //                 num_of_times: snapshot.val()+ 1
+    //             }).then(()=>{
+    //                 // Log score data.
 
-                    firebase.database().ref('Users/'+user.displayName+'/num_of_times').once('value',(snapshot)=>{
-                        // get current times.
-                        firebase.database().ref('Users/'+user.displayName+'/'+snapshot.val()).set({
-                            scores : Number(cc.find("Canvas/mario").getComponent("Player").score),
-                            time: Number(300- Number(this.remainTime.toFixed(0)))
-                        })
-                    })
+    //                 firebase.database().ref('Users/'+user.displayName+'/num_of_times').once('value',(snapshot)=>{
+    //                     // get current times.
+    //                     firebase.database().ref('Users/'+user.displayName+'/'+snapshot.val()).set({
+    //                         scores : Number(cc.find("Canvas/mario").getComponent("Player").score),
+    //                         time: Number(300- Number(this.remainTime.toFixed(0)))
+    //                     })
+    //                 })
 
-                })
-
-
-
-
-
-        })
+    //             })
 
 
 
-        // Check if need to update 'Best_score'
-        firebase.database().ref('Users/'+user.displayName+'/Best_score').once('value',(snapshot)=>{
-            // get current times.
-            if(cc.find("Canvas/mario").getComponent("Player").score.toString() > snapshot.val()){
-                // Update Best_score.
-                firebase.database().ref('Users/'+user.displayName+'/').update({
-                    Best_score: cc.find("Canvas/mario").getComponent("Player").score.toString()
-                })
-            }
-        })
-
-        // Update user lives.
-        firebase.database().ref('Users/'+user.displayName+'/').update({
-            Lives: cc.find("Canvas/mario").getComponent("Player").lives
-        })
 
 
-        setTimeout(()=>{
-            cc.director.loadScene("1to2");
-            return;
-        }, 5000);
-    }
+    //     })
+
+
+
+    //     // Check if need to update 'Best_score'
+    //     firebase.database().ref('Users/'+user.displayName+'/Best_score').once('value',(snapshot)=>{
+    //         // get current times.
+    //         if(cc.find("Canvas/mario").getComponent("Player").score.toString() > snapshot.val()){
+    //             // Update Best_score.
+    //             firebase.database().ref('Users/'+user.displayName+'/').update({
+    //                 Best_score: cc.find("Canvas/mario").getComponent("Player").score.toString()
+    //             })
+    //         }
+    //     })
+
+    //     // Update user lives.
+    //     firebase.database().ref('Users/'+user.displayName+'/').update({
+    //         Lives: cc.find("Canvas/mario").getComponent("Player").lives
+    //     })
+
+
+    //     setTimeout(()=>{
+    //         cc.director.loadScene("1to2");
+    //         return;
+    //     }, 5000);
+    // }
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.initProperties();
-        this.gameover = false;        
+    // onLoad () {
+    //     this.initProperties();
+    //     this.gameover = false;        
+    // }
+
+    IncreaseVolume(event, customEventData) {
+        console.log("increaseVolume_init called");  // Added for debugging
+
+        let currentVolume = cc.audioEngine.getMusicVolume();
+        if(currentVolume < 1) {
+            cc.audioEngine.setMusicVolume(currentVolume + 2);
+        }
     }
+
+    increaseVolume_init() {
+        let volumeUp = new cc.Component.EventHandler();
+        volumeUp.target = this.node;
+        volumeUp.component = "level_1";
+        volumeUp.handler = "IncreaseVolume";
+        
+        volumeUp.customEventData = "foobar";
+        cc.find("Canvas/pause/PlusButton").getComponent(cc.Button).clickEvents.push(volumeUp);
+    }
+
+   
 
     start () {
         this.playBGM();
         this.Toggle_init();
+        this.increaseVolume_init();
+
     }
 
-    update (dt) {
-        if(!this.gameover){
-            this.updateUI(dt);
-            if(this.remainTime == 0){
-                this.gameover = true;
-                this.onGameover();
-            }
-        }
-    }
-    onGameover(){
-        cc.director.loadScene("Gameover");
-    }
+    // update (dt) {
+    //     if(!this.gameover){
+    //         this.updateUI(dt);
+    //         if(this.remainTime == 0){
+    //             this.gameover = true;
+    //             this.onGameover();
+    //         }
+    //     }
+    // }
+    // onGameover(){
+    //     cc.director.loadScene("Gameover");
+    // }
 
 }

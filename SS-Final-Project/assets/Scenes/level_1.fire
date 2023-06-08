@@ -966,15 +966,15 @@
     },
     "_enabled": true,
     "bgm": null,
-    "touch_coin": null,
-    "victory": null,
     "Canvas": {
       "__id__": 2
     },
     "MainCamera": {
       "__id__": 3
     },
-    "PauseBoard": null,
+    "PauseBoard": {
+      "__uuid__": "78541796-253d-4278-90dd-025019d4e2a4"
+    },
     "_id": "5eu/1FHo1PIo4U0XTk53XD"
   }
 ]
