@@ -29,7 +29,11 @@ export default class StageManager extends cc.Component {
     @property(cc.Node)
     gameover = null;
 
+    @property(cc.Prefab)
+    bulletPrefab: cc.Prefab = null;
 
+
+    public bulletPool = new cc.NodePool("Bullet");
     // LIFE-CYCLE CALLBACKS:
     gameOver() {
         this.gameover.active = true
@@ -40,6 +44,11 @@ export default class StageManager extends cc.Component {
     }
 
     onLoad () {
+        const initialBulletCount = 100;
+        for (let i = 0; i < initialBulletCount; i++) {
+          const bullet = cc.instantiate(this.bulletPrefab);
+          this.bulletPool.put(bullet);
+        }
         this.scheduleOnce(function () {
             this.loading.active = false;
             this.enemy.active = true;
