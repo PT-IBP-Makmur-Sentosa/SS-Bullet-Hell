@@ -272,12 +272,12 @@ export default class Player extends cc.Component {
 
     if (this.bulletPool.size() > 0){
       bullet = this.bulletPool.get(this.bulletPool);
-      this.node.addChild(bullet);
+      //this.node.addChild(bullet);
     }
 
     if (bullet != null) {
       bullet.getComponent("Bullet").init(this.node, this.bulletanim, this.attack);
-      this.node.addChild(bullet);
+      //this.node.addChild(bullet);
     }
   }
 }

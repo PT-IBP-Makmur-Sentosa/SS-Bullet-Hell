@@ -69,7 +69,7 @@ export default class EnemyShooter extends cc.Component {
       this.enemyHP -= attack;
       this.scheduleOnce(function () {
         this.first = false
-      }, 0.1)
+      }, 0.05)
       //if (this.enemyHP > 0 || this.enemyHP < 29) {console.log(this.enemyHP);}
       if (this.enemyHP <= 0) {
         this.scheduleOnce(function () {
