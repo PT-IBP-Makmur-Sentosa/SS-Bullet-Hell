@@ -5,7 +5,6 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 
@@ -57,7 +56,7 @@ export default class StageManager extends cc.Component {
         this.scheduleOnce(function () {
             cc.director.loadScene("Lobby")
         } , 2)
-        this.saveScoreToFirebase(this.score.toString())
+        this.saveScoreToFirebase(this.score)
     }
 
     onLoad () {
@@ -101,4 +100,6 @@ export default class StageManager extends cc.Component {
               console.error("Error saving score to Firebase:", error);
             });
         
+    })
+}
 }
