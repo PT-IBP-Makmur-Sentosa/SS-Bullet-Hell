@@ -20,7 +20,7 @@ export default class EnemySpawner extends cc.Component {
     this.isAlive = false;
 
     this.enemyPool = new cc.NodePool();
-    const initialEnemyCount = 100;
+    const initialEnemyCount = 1;
     var enemy = null;
     for (let i = 0; i < initialEnemyCount; i++) {
       var random = Math.random()

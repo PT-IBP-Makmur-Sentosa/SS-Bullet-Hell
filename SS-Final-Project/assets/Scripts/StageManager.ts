@@ -46,7 +46,7 @@ export default class StageManager extends cc.Component {
     }
 
     onLoad () {
-        const initialBulletCount = 100;
+        const initialBulletCount = 1;
         for (let i = 0; i < initialBulletCount; i++) {
           const bullet = cc.instantiate(this.bulletPrefab);
           this.bulletPool.put(bullet);

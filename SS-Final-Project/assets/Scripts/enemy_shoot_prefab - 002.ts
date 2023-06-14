@@ -58,7 +58,8 @@ export default class EnemyShooter1 extends cc.Component {
       const moveAction = cc.moveTo(duration, bulletEndPosition);
       const removeAction = cc.callFunc(() => {
         //this.node.parent.removeChild(bullet);
-        this.stageManager.bulletPool.put(this.bullet);
+        //this.stageManager.bulletPool.put(this.bullet);
+        this.bullet.destroy()
       });
 
       this.bullet.runAction(cc.sequence(moveAction, removeAction));
