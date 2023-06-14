@@ -86,6 +86,12 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     skillLabel: cc.Label = null;
 
+    @property(cc.Sprite)
+    leaderboard: cc.Sprite = null;
+
+    @property(cc.Button)
+    leaderboardButton: cc.Button = null;
+
     // LIFE-CYCLE CALLBACKS:
     private lives: number = 10000;
     private attack: number = 0;
@@ -145,6 +151,7 @@ export default class NewClass extends cc.Component {
         this.btnLeft.node.on('click', this.leftShip, this);
         this.btnRight.node.on('click', this.rightShip, this);
         this.shopBtn.node.on('click', this.openShop, this);
+        this.leaderboardButton.node.on('click', this.openLeaderboard, this);
         this.updateShipDisplay();
         console.log(this.currentShipIndex)
     }
@@ -235,6 +242,35 @@ export default class NewClass extends cc.Component {
 
     openShop(){
         cc.director.loadScene("Shop");
+    }
+
+    async openLeaderboard() {
+        const db = firebase.database();
+        const usersRef = db.ref('users');
+        const topUsers = [];
+        await usersRef.orderByChild('score').limitToLast(3).once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const uid = childSnapshot.key;
+            const userData = childSnapshot.val();
+            topUsers.push({ uid, ...userData });
+          });
+          console.log(topUsers);
+        });
+        const firstName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("first").getChildByName("name");
+        const firstScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("first").getChildByName("score");
+        firstName.getComponent(cc.Label).string = topUsers[2].name;
+        firstScore.getComponent(cc.Label).string = topUsers[2].score;
+
+        const secondName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("second").getChildByName("name");
+        const secondScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("second").getChildByName("score");
+        secondName.getComponent(cc.Label).string = topUsers[1].name;
+        secondScore.getComponent(cc.Label).string = topUsers[1].score;
+        const thirdName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("third").getChildByName("name");
+        const thirdScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("third").getChildByName("score");
+        thirdName.getComponent(cc.Label).string = topUsers[0].name;
+        thirdScore.getComponent(cc.Label).string = topUsers[0].score;
+
+        this.leaderboard.node.active = this.leaderboard.node.active ? false : true;
     }
 
     public toStage(event, customEventData: string) : void {
