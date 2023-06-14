@@ -34,19 +34,19 @@ class PlayerClass {
   }
 
   public static original(): PlayerClass {
-    return new PlayerClass(3, 3, "extra attack damage(+1 ATK)");
+    return new PlayerClass(3, 3, "Attack Buff"); // +1 atk
   }
   public static plane1(): PlayerClass {
-    return new PlayerClass(4, 2, "invincible");
+    return new PlayerClass(4, 2, "Invincible"); // Invulnerable
   }
   public static plane2(): PlayerClass {
-    return new PlayerClass(2, 6, "extra attack speed(-0.05 interval)");
+    return new PlayerClass(2, 6, "Firerate Buff"); // -0.05
   }
   public static plane3(): PlayerClass {
-    return new PlayerClass(5, 3, "extra HP(+1 HP)");
+    return new PlayerClass(5, 3, "Heal"); // +1 HP
   }
   public static plane4(): PlayerClass {
-    return new PlayerClass(4, 4, "double attack(2x ATK)");
+    return new PlayerClass(4, 4, "Double Damage"); // x2 atk
   }
 }
 @ccclass
@@ -57,11 +57,19 @@ export default class Player extends cc.Component {
   shipSprites: cc.SpriteFrame[] = [];
   @property([cc.PolygonCollider])
   shipCollider = [];
+  @property(cc.PhysicsPolygonCollider)
+  mainCollider = null
+  @property()
+  playerNo = 0
 
+
+  private cooldown: boolean = false
   private lives: number = 10000;
   private attack: number = 0;
   private skill: string = "";
   private bulletanim: string = "";
+  private firerate: number = 0.3;
+  private duration: number = 10
 
   @property(cc.Prefab)
   bulletPrefab: cc.Prefab = null;
@@ -71,6 +79,8 @@ export default class Player extends cc.Component {
   private aDown: boolean = false;
   private sDown: boolean = false;
   private dDown: boolean = false;
+  private kDown: boolean = false;
+
   @property
   playerSpeed: number = 150;
   private isDead: boolean = false;
@@ -150,45 +160,154 @@ export default class Player extends cc.Component {
     this.playerMovement(dt);
     this.playerReborn(dt);
     this.playerAnimation();
+    this.playerUtil()
+    this.coolDown(dt)
   }
 
   onKeyDown(event): void {
-    if (event.keyCode == cc.macro.KEY.w) {
-      this.wDown = true;
+    if(event.keyCode == cc.macro.KEY.k){
+      this.kDown = true
     }
-    if (event.keyCode == cc.macro.KEY.a) {
-      this.aDown = true;
+    if(this.playerNo == 0){
+      if (event.keyCode == cc.macro.KEY.w) {
+        this.wDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.a) {
+        this.aDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.s) {
+        this.sDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.d) {
+        this.dDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.space && !this.once) {
+        this.spaceDown = true;
+      }
     }
-    if (event.keyCode == cc.macro.KEY.s) {
-      this.sDown = true;
+    else if(this.playerNo == 1){
+      if (event.keyCode == cc.macro.KEY.up) {
+        this.wDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.left) {
+        this.aDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.down) {
+        this.sDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.right) {
+        this.dDown = true;
+      }
+      if (event.keyCode == cc.macro.KEY.shift && !this.once) {
+        this.spaceDown = true;
+      }
     }
-    if (event.keyCode == cc.macro.KEY.d) {
-      this.dDown = true;
-    }
-    if (event.keyCode == cc.macro.KEY.space && !this.once) {
-      this.spaceDown = true;
-    }
+    
   }
 
   onKeyUp(event): void {
-    if (event.keyCode == cc.macro.KEY.w) {
-      this.wDown = false;
+    if(event.keyCode == cc.macro.KEY.k){
+      this.kDown = false
     }
-    if (event.keyCode == cc.macro.KEY.a) {
-      this.aDown = false;
+    if(this.playerNo == 0){
+      if (event.keyCode == cc.macro.KEY.w) {
+        this.wDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.a) {
+        this.aDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.s) {
+        this.sDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.d) {
+        this.dDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.space) {
+        this.spaceDown = false;
+        this.once = false;
+        //unschedule the bullet
+        this.unschedule(this.createBullet);
+      }
     }
-    if (event.keyCode == cc.macro.KEY.s) {
-      this.sDown = false;
+    else if(this.playerNo == 1){
+      if (event.keyCode == cc.macro.KEY.up) {
+        this.wDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.left) {
+        this.aDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.down) {
+        this.sDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.right) {
+        this.dDown = false;
+      }
+      if (event.keyCode == cc.macro.KEY.shift) {
+        this.spaceDown = false;
+        this.once = false;
+        //unschedule the bullet
+        this.unschedule(this.createBullet);
+      }
     }
-    if (event.keyCode == cc.macro.KEY.d) {
-      this.dDown = false;
+  }
+
+  timed = 0
+  coolDown(dt): void{
+    if(this.cooldown == true){
+      this.timed += dt
+      //console.log(this.timed)
+      if(this.timed >= 15){
+        this.timed = 15
+      }
     }
-    if (event.keyCode == cc.macro.KEY.space) {
-      this.spaceDown = false;
-      this.once = false;
-      //unschedule the bullet
-      this.unschedule(this.createBullet);
+  }
+
+  playerUtil(): void{
+    if(!this.cooldown && this.kDown){
+      this.cooldown = true
+      this.scheduleOnce(function () {
+        this.cooldown = false
+      }, 15)
+      if(this.skill == "Attack Buff"){
+        this.attack += 1
+        console.log(this.attack)
+        this.scheduleOnce(function () {
+          this.attack -= 1
+          console.log(this.attack)
+        }, this.duration)
+      }
+      else if(this.skill == "Invincible"){
+        console.log("invul")
+        this.isReborn = true;
+        this.anim.play("hit");
+        this.mainCollider.enabled = false;
+        this.scheduleOnce(() => {
+          this.isReborn = false;
+          this.anim.stop("hit");
+          this.mainCollider.enabled = true;
+        }, 3);
+      }
+      else if(this.skill == "Firerate Buff"){
+        this.firerate -= 0.05
+        console.log(this.firerate)
+        this.scheduleOnce(function () {
+          this.firerate += 0.05
+          console.log(this.firerate)
+        }, this.duration)
+      }
+      else if(this.skill == "Heal"){
+        this.lives += 1
+      }
+      else if(this.skill == "Double Damage"){
+        this.attack *= 2
+        console.log(this.attack)
+        this.scheduleOnce(function () {
+          this.attack /= 2
+          console.log(this.attack)
+        }, this.duration)
+      }
     }
+    
   }
 
   playerMovement(dt): void {
@@ -228,13 +347,13 @@ export default class Player extends cc.Component {
       stageManager.health = this.lives;
       //cc.log("lives: " + this.lives);
       this.anim.play("hit");
-      this.getComponent(cc.PhysicsPolygonCollider).enabled = false;
+      this.mainCollider.enabled = false;
       this.scheduleOnce(() => {
         this.isReborn = false;
         this.isDead = false;
 
         this.anim.stop("hit");
-        this.getComponent(cc.PhysicsPolygonCollider).enabled = true;
+        this.mainCollider.enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
       cc.find("StageManager").getComponent("StageManager").gameOver();
@@ -250,15 +369,15 @@ export default class Player extends cc.Component {
     if (this.spaceDown && !this.once) {
       this.once = true;
       this.createBullet();
-      this.schedule(this.createBullet, 0.3);
+      this.schedule(this.createBullet, this.firerate);
       // this.animateState = this.anim.play("shoot");
       // cc.log(this.attack);
     }
     if (this.wDown || this.sDown) {
-      this.anim.play("player_updown");
+      this.anim.playAdditive("player_updown");
     }
     if (this.dDown) {
-      this.anim.play("player_acc");
+      this.anim.playAdditive("player_acc");
     }
   }
 

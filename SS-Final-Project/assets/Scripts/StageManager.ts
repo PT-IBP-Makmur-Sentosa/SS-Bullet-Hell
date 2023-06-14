@@ -25,6 +25,8 @@ export default class StageManager extends cc.Component {
     @property(cc.Node)
     loading = null;
     @property(cc.Node)
+    player = null;
+    @property(cc.Node)
     enemy = null;
     @property(cc.Node)
     gameover = null;
@@ -57,12 +59,12 @@ export default class StageManager extends cc.Component {
 
     start () {
         this.stageLabel.string = this.stageName;
-        this.healthLabel.string = "HP X " + this.health.toString()
+        this.healthLabel.string = "HP X " + this.player.getComponent("Player").lives.toString()
         this.scoreLabel.string = "Score: " + this.score.toString()
     }
 
     update (dt) {
-        this.healthLabel.string = "HP X " + this.health.toString()
+        this.healthLabel.string = "HP X " + this.player.getComponent("Player").lives.toString()
         this.scoreLabel.string = "Score: " + this.score.toString()
     }
 }
