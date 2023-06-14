@@ -42,6 +42,13 @@ export default class StageManager extends cc.Component {
     @property(cc.Prefab)
     bulletPrefab: cc.Prefab = null;
 
+    @property(cc.AudioClip)
+    backgroundMusic: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    lobbyMusic: cc.AudioClip = null;
+
+    private audioSource: cc.AudioSource = null;
+
 
     public bulletPool = new cc.NodePool("Bullet");
     // LIFE-CYCLE CALLBACKS:
@@ -54,13 +61,16 @@ export default class StageManager extends cc.Component {
         this.gameover.active = true
         this.enemy.active = false
         this.scheduleOnce(function () {
+            cc.audioEngine.playMusic(this.lobbyMusic, true);
             cc.director.loadScene("Lobby")
         } , 2)
         this.saveScoreToFirebase(this.score)
+
     }
 
     onLoad () {
         const initialBulletCount = 100;
+        cc.audioEngine.playMusic(this.backgroundMusic, true)
         for (let i = 0; i < initialBulletCount; i++) {
           const bullet = cc.instantiate(this.bulletPrefab);
           this.bulletPool.put(bullet);
@@ -69,6 +79,7 @@ export default class StageManager extends cc.Component {
             this.loading.active = false;
             this.enemy.active = true;
         }, 2)
+        
     }
 
     start () {

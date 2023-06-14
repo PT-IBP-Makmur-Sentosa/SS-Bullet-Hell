@@ -81,13 +81,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 62
-      },
-      {
-        "__id__": 63
-      },
-      {
         "__id__": 64
+      },
+      {
+        "__id__": 65
+      },
+      {
+        "__id__": 66
       }
     ],
     "_prefab": null,
@@ -2764,12 +2764,15 @@
       },
       {
         "__id__": 59
+      },
+      {
+        "__id__": 61
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 61
+        "__id__": 63
       }
     ],
     "_prefab": null,
@@ -3010,6 +3013,81 @@
     "_id": "e1Awg7m0tLF6n8t8pR6BRS"
   },
   {
+    "__type__": "cc.Node",
+    "_name": "bgm_lobby",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 56
+    },
+    "_children": [],
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 62
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "15GCIjRvZF5pOaQWiq430P"
+  },
+  {
+    "__type__": "cb244gh2c9DtZTXYYVFioMW",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 61
+    },
+    "_enabled": true,
+    "backgroundMusic": {
+      "__uuid__": "eae6f1f4-4623-4ecc-a3e2-d52878523462"
+    },
+    "_id": "16STMmtk1P/qpY4l76AoXb"
+  },
+  {
     "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
@@ -3100,7 +3178,7 @@
       "__id__": 54
     },
     "loading": {
-      "__id__": 61
+      "__id__": 63
     },
     "_id": "38jNt2WcFFF602UPpdHux4"
   }
