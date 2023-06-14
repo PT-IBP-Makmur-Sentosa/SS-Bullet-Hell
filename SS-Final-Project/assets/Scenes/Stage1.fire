@@ -169,6 +169,12 @@
     "bulletPrefab": {
       "__uuid__": "a95539ec-83bb-4cca-92fb-bc3821fa44fe"
     },
+    "backgroundMusic": {
+      "__uuid__": "5c7a3898-8ec9-495f-9739-8b3173b59c05"
+    },
+    "lobbyMusic": {
+      "__uuid__": "eae6f1f4-4623-4ecc-a3e2-d52878523462"
+    },
     "_id": "78nL+WQ2JJAb68RHuYMrsM"
   },
   {

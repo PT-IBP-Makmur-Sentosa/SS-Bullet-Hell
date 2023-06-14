@@ -49,11 +49,7 @@ export default class Menu extends cc.Component {
     @property(cc.Button)
     loginSubmitButton: cc.Button = null;
 
-    @property({type:cc.AudioClip})
-    bgm: cc.AudioClip = null;
-
     start () {
-        cc.audioEngine.playMusic(this.bgm, true);
         this.signupButton.node.on('click', this.onSignupClick, this);
         this.signupCloseButton.node.on('click', this.onSignupCloseClick, this);
 
