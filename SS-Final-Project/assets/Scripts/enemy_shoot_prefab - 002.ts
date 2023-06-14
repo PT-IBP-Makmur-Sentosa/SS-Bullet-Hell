@@ -5,18 +5,20 @@ function randomRangeInt(min: number, max: number): number {
 }
 
 @ccclass
-export default class EnemyShooter extends cc.Component {
+export default class EnemyShooter1 extends cc.Component {
   @property({ type: cc.Prefab })
   private bulletPrefab: cc.Prefab = null;
 
   private enemyHP: number = 8; // HP property for the enemy
 
   private enemyShootInterval: number = 1.5;
-  private minBulletCount: number = 2; // Minimum number of bullets to shoot
-  private maxBulletCount: number = 4; // Maximum number of bullets to shoot
+  private minBulletCount: number = 1; // Minimum number of bullets to shoot
+  private maxBulletCount: number = 3; // Maximum number of bullets to shoot
+  private stageManager:any = null;
 
   onLoad() {
     this.scheduleShoot();
+    this.stageManager = cc.find("StageManager").getComponent("StageManager")
   }
 
   scheduleShoot(): void {
@@ -25,19 +27,21 @@ export default class EnemyShooter extends cc.Component {
     }, this.enemyShootInterval);
   }
 
+  bullet = null
+  
   shoot(): void {
     const bulletCount = randomRangeInt(this.minBulletCount, this.maxBulletCount);
-    var stageManager = cc.find("StageManager").getComponent("StageManager");
-    var bullet = null
+    
     for (let i = 0; i < bulletCount; i++) {
-      if(stageManager.bulletPool.size() > 0){
-        bullet = stageManager.bulletPool.get();
+      if(this.stageManager.bulletPool.size() > 0){
+        this.bullet = this.stageManager.bulletPool.get();
+        //console.log(this.stageManager.bulletPool.size())
       }
-      else {
-        bullet = cc.instantiate(this.bulletPrefab);
+      else{
+        this.bullet = cc.instantiate(this.bulletPrefab);
+        //console.log("new")
       }
-
-      bullet.setPosition(this.node.position);
+      this.bullet.setPosition(this.node.position);
 
       const bulletSpeed = 1000;
 
@@ -46,22 +50,25 @@ export default class EnemyShooter extends cc.Component {
       const bulletDirection = cc.v2(Math.cos(angle), Math.sin(angle));
 
       // Calculate the end position of the bullet based on its direction and speed
-      const moveAction = cc.moveBy(0.8, -1000, 0);
+      const bulletEndPosition = bulletDirection.mul(bulletSpeed);
+      const bulletEndPosition2 = cc.v3(-1000, this.bullet.position.y);
 
-      
+      const distance = this.bullet.position.sub(bulletEndPosition2).mag();
+      const duration = (distance + 500) / 500;
+      const moveAction = cc.moveTo(duration, bulletEndPosition);
       const removeAction = cc.callFunc(() => {
         //this.node.parent.removeChild(bullet);
-        stageManager.bulletPool.put(bullet);
+        this.stageManager.bulletPool.put(this.bullet);
       });
 
-      bullet.runAction(cc.sequence(moveAction, removeAction));
+      this.bullet.runAction(cc.sequence(moveAction, removeAction));
 
       const angleRadians = Math.atan2(bulletDirection.y, bulletDirection.x);
       const angleDegrees = cc.misc.radiansToDegrees(angleRadians);
 
-      bullet.angle = -angleDegrees; // Reverse the angle for proper rotation
+      this.bullet.angle = -angleDegrees; // Reverse the angle for proper rotation
 
-      this.node.parent.addChild(bullet);
+      this.node.parent.addChild(this.bullet);
     }
   }
 
@@ -87,8 +94,7 @@ export default class EnemyShooter extends cc.Component {
         spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 8)
         //this.node.destroy();
         //console.log('Enemy destroyed');
-        var stageManager = cc.find("StageManager").getComponent("StageManager");
-        stageManager.score += 500;
+        this.stageManager.score += 500;
       }
     }
   }

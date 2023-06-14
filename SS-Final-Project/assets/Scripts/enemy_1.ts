@@ -66,16 +66,16 @@ export default class EnemySpawner extends cc.Component {
     let enemyCount = 4;
     let delay = 1;
     let totalSpawned = 0;
-    const maxEnemies = 16;
+    const maxEnemies = 10;
 
     const spawnEnemy = () => {
       this.scheduleOnce(() => {
         if (totalSpawned < maxEnemies) {
           this.spawnMultiple(enemyCount); // Spawn 'enemyCount' enemies
           enemyCount++;
-          totalSpawned++;
+          totalSpawned += enemyCount;
         } else {
-          this.spawnMultiple(enemyCount);
+          this.spawnMultiple(maxEnemies);
         }
         delay = 5;
         spawnEnemy();

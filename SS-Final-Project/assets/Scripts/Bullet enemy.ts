@@ -13,8 +13,12 @@ export default class EnemyBullet extends cc.Component {
     if (otherGroup === 'boundary') {
       // Destroy the bullet when collided with the boundary
       // this.node.destroy();
+      //console.log("bounded")
       this.stageManager.bulletPool.put(this.node);
       // console.log('destroy bullet enemy group');
+    }
+    else if(otherGroup === 'player'){
+      this.stageManager.bulletPool.put(this.node);
     }
   }
 }

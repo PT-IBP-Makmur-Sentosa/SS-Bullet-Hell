@@ -20,14 +20,21 @@ export default class EnemyShooter extends cc.Component {
       this.shoot();
     }, this.enemyShootInterval);
   }
-
+ 
   shoot(): void {
-    const bullet = this.stageManager.bulletPool.get();
+    var bullet = null
+    if(this.stageManager.bulletPool.size() > 0){
+      //console.log(this.stageManager.bulletPool.size())
+      bullet = this.stageManager.bulletPool.get();
+    }
+    else{
+      //console.log("new")
+      bullet = cc.instantiate(this.bulletPrefab);
+    }
     bullet.setPosition(this.node.position);
-    console.log(this.stageManager.bulletPool.size())
     const moveAction = cc.moveBy(0.8, -1000, 0);
     const removeAction = cc.callFunc(() => {
-      //this.node.parent.removeChild(bullet);
+      //this.node.parent.removeChild(this.bullet);
       this.stageManager.bulletPool.put(bullet);
     });
 

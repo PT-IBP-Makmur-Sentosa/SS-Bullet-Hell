@@ -356,7 +356,7 @@ export default class Player extends cc.Component {
         this.mainCollider.enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
-      cc.find("StageManager").getComponent("StageManager").gameOver();
+      if(this.playerNo == 0) cc.find("StageManager").getComponent("StageManager").gameOver();
       this.node.active = false;
     }
   }
