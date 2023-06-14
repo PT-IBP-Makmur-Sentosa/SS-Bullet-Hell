@@ -254,12 +254,13 @@ export default class NewClass extends cc.Component {
             const userData = childSnapshot.val();
             topUsers.push({ uid, ...userData });
           });
+          topUsers.sort((a, b) => b.score - a.score);
           console.log(topUsers);
         });
         const firstName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("first").getChildByName("name");
         const firstScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("first").getChildByName("score");
-        firstName.getComponent(cc.Label).string = topUsers[2].name;
-        firstScore.getComponent(cc.Label).string = topUsers[2].score;
+        firstName.getComponent(cc.Label).string = topUsers[0].name;
+        firstScore.getComponent(cc.Label).string = topUsers[0].score;
 
         const secondName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("second").getChildByName("name");
         const secondScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("second").getChildByName("score");
@@ -267,8 +268,8 @@ export default class NewClass extends cc.Component {
         secondScore.getComponent(cc.Label).string = topUsers[1].score;
         const thirdName = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("third").getChildByName("name");
         const thirdScore = this.leaderboard.node.getChildByName("Leaderboard Area").getChildByName("third").getChildByName("score");
-        thirdName.getComponent(cc.Label).string = topUsers[0].name;
-        thirdScore.getComponent(cc.Label).string = topUsers[0].score;
+        thirdName.getComponent(cc.Label).string = topUsers[2].name;
+        thirdScore.getComponent(cc.Label).string = topUsers[2].score;
 
         this.leaderboard.node.active = this.leaderboard.node.active ? false : true;
     }
