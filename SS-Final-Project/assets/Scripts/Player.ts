@@ -59,6 +59,8 @@ export default class Player extends cc.Component {
   shipCollider = [];
   @property(cc.PhysicsPolygonCollider)
   mainCollider = null
+  @property(cc.Node)
+  cooldownOverlay = null
   @property()
   playerNo = 0
 
@@ -255,6 +257,7 @@ export default class Player extends cc.Component {
   coolDown(dt): void{
     if(this.cooldown == true){
       this.timed += dt
+      this.cooldownOverlay.height = this.timed / 15 * 50
       //console.log(this.timed)
       if(this.timed >= 15){
         this.timed = 15
@@ -267,6 +270,8 @@ export default class Player extends cc.Component {
       this.cooldown = true
       this.scheduleOnce(function () {
         this.cooldown = false
+        this.cooldownOverlay.height = 0
+        this.timed = 0
       }, 15)
       if(this.skill == "Attack Buff"){
         this.attack += 1
@@ -285,7 +290,7 @@ export default class Player extends cc.Component {
           this.isReborn = false;
           this.anim.stop("hit");
           this.mainCollider.enabled = true;
-        }, 3);
+        }, 5);
       }
       else if(this.skill == "Firerate Buff"){
         this.firerate -= 0.05
