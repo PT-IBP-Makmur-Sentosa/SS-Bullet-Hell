@@ -27,9 +27,16 @@ export default class EnemyShooter extends cc.Component {
 
   shoot(): void {
     const bulletCount = randomRangeInt(this.minBulletCount, this.maxBulletCount);
-
+    var stageManager = cc.find("StageManager").getComponent("StageManager");
+    var bullet = null
     for (let i = 0; i < bulletCount; i++) {
-      const bullet = cc.instantiate(this.bulletPrefab);
+      if(stageManager.bulletPool.size() > 0){
+        bullet = stageManager.bulletPool.get();
+      }
+      else {
+        bullet = cc.instantiate(this.bulletPrefab);
+      }
+
       bullet.setPosition(this.node.position);
 
       const bulletSpeed = 1000;
@@ -39,13 +46,13 @@ export default class EnemyShooter extends cc.Component {
       const bulletDirection = cc.v2(Math.cos(angle), Math.sin(angle));
 
       // Calculate the end position of the bullet based on its direction and speed
-      const bulletEndPosition = bulletDirection.mul(bulletSpeed);
-      const bulletEndPosition2 = cc.v3(-1000, bullet.position.y);
+      const moveAction = cc.moveBy(0.8, -1000, 0);
 
-      const distance = bullet.position.sub(bulletEndPosition2).mag();
-      const duration = (distance + 500) / 500;
-      const moveAction = cc.moveTo(duration, bulletEndPosition);
-      const removeAction = cc.removeSelf(true);
+      
+      const removeAction = cc.callFunc(() => {
+        //this.node.parent.removeChild(bullet);
+        stageManager.bulletPool.put(bullet);
+      });
 
       bullet.runAction(cc.sequence(moveAction, removeAction));
 
