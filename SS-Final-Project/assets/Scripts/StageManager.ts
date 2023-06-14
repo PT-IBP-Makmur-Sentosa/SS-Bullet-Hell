@@ -5,7 +5,14 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+
+
+
 const {ccclass, property} = cc._decorator;
+declare const firebase: any;
 
 @ccclass
 export default class StageManager extends cc.Component {
@@ -50,6 +57,7 @@ export default class StageManager extends cc.Component {
         this.scheduleOnce(function () {
             cc.director.loadScene("Lobby")
         } , 2)
+        this.saveScoreToFirebase(this.score.toString())
     }
 
     onLoad () {
@@ -74,4 +82,23 @@ export default class StageManager extends cc.Component {
         this.healthLabel.string = "HP X " + this.player.getComponent("Player").lives.toString()
         this.scoreLabel.string = "Score: " + this.score.toString()
     }
+
+    saveScoreToFirebase(score: number) {
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref("users/" + user?.uid);
+        userRef.once("value", (snapshot) => {
+          const userData = snapshot.val();
+          var updatedScore = userData.score;
+          if( updatedScore < score) { updatedScore = score;}
+          const updatedCoins = userData.coins + score * 0.1;
+    
+          userRef.update({ score: updatedScore, coins: updatedCoins })
+            .then(() => {
+              console.log("Score saved to Firebase");
+            })
+            .catch((error) => {
+              console.error("Error saving score to Firebase:", error);
+            });
+        
 }
