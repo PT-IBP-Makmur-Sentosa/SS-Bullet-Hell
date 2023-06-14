@@ -60,6 +60,8 @@ export default class Player extends cc.Component {
   @property(cc.PhysicsPolygonCollider)
   mainCollider = null
   @property(cc.Node)
+  itemSprite = null
+  @property(cc.Node)
   cooldownOverlay = null
   @property()
   playerNo = 0
@@ -72,6 +74,7 @@ export default class Player extends cc.Component {
   private bulletanim: string = "";
   private firerate: number = 0.3;
   private duration: number = 10
+  private item: boolean = false
 
   @property(cc.Prefab)
   bulletPrefab: cc.Prefab = null;
@@ -82,6 +85,7 @@ export default class Player extends cc.Component {
   private sDown: boolean = false;
   private dDown: boolean = false;
   private kDown: boolean = false;
+  private iDown: boolean = false;
 
   @property
   playerSpeed: number = 150;
@@ -170,6 +174,10 @@ export default class Player extends cc.Component {
     if(event.keyCode == cc.macro.KEY.k){
       this.kDown = true
     }
+    if(event.keyCode == cc.macro.KEY.i){
+      this.iDown = true
+    }
+
     if(this.playerNo == 0){
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = true;
@@ -211,6 +219,10 @@ export default class Player extends cc.Component {
     if(event.keyCode == cc.macro.KEY.k){
       this.kDown = false
     }
+    if(event.keyCode == cc.macro.KEY.i){
+      this.iDown = false
+    }
+
     if(this.playerNo == 0){
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = false;
@@ -250,6 +262,13 @@ export default class Player extends cc.Component {
         //unschedule the bullet
         this.unschedule(this.createBullet);
       }
+    }
+  }
+
+  getItem(){
+    if(this.item == false){
+      this.item = true
+      this.itemSprite.active = true
     }
   }
 
@@ -293,10 +312,10 @@ export default class Player extends cc.Component {
         }, 5);
       }
       else if(this.skill == "Firerate Buff"){
-        this.firerate -= 0.05
+        this.firerate -= 0.1
         console.log(this.firerate)
         this.scheduleOnce(function () {
-          this.firerate += 0.05
+          this.firerate += 0.1
           console.log(this.firerate)
         }, this.duration)
       }
@@ -311,6 +330,12 @@ export default class Player extends cc.Component {
           console.log(this.attack)
         }, this.duration)
       }
+    }
+
+    if(this.iDown && this.item == true){
+      this.lives += 1
+      this.item = false
+      this.itemSprite.active = false
     }
     
   }

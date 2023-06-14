@@ -37,6 +37,10 @@ export default class StageManager extends cc.Component {
 
     public bulletPool = new cc.NodePool("Bullet");
     // LIFE-CYCLE CALLBACKS:
+    giveItem() {
+        this.player.getComponent("Player").getItem()
+    }
+
     gameOver() {
         this.gameover.active = true
         this.enemy.active = false

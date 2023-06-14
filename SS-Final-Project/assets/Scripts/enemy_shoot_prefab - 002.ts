@@ -96,6 +96,11 @@ export default class EnemyShooter1 extends cc.Component {
         //this.node.destroy();
         //console.log('Enemy destroyed');
         this.stageManager.score += 500;
+        var rand = Math.random()
+        if(rand < 0.1){
+          console.log("powerup")
+          this.stageManager.giveItem()
+        }
       }
     }
   }

@@ -66,8 +66,12 @@ export default class EnemyShooter extends cc.Component {
         spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 4)
         //this.node.destroy();
         //console.log('Enemy destroyed');
-        var stageManager = cc.find("StageManager").getComponent("StageManager");
-        stageManager.score += 100;
+        this.stageManager.score += 100;
+        var rand = Math.random()
+        if(rand < 0.1){
+          console.log("powerup")
+          this.stageManager.giveItem()
+        }
       }
     }
   }
