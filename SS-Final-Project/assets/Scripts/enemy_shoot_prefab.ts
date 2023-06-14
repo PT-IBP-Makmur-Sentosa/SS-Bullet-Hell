@@ -8,8 +8,11 @@ export default class EnemyShooter extends cc.Component {
   private enemyShootInterval: number = 1.5;
   private enemyHP: number = 4; // HP property for the enemy
 
+  private stageManager:any = null;
   onLoad() {
     this.scheduleShoot();
+    const manager = cc.find("StageManager");
+    this.stageManager = manager.getComponent("StageManager");
   }
 
   scheduleShoot(): void {
@@ -19,7 +22,7 @@ export default class EnemyShooter extends cc.Component {
   }
 
   shoot(): void {
-    const bullet = cc.instantiate(this.bulletPrefab);
+    const bullet = this.stageManager.bulletPool.get();
     bullet.setPosition(this.node.position);
 
     const bulletSpeed = 500;
@@ -29,7 +32,10 @@ export default class EnemyShooter extends cc.Component {
     const distance = bullet.position.sub(bulletEndPosition2).mag();
     const duration = distance / bulletSpeed;
     const moveAction = cc.moveTo(duration, bulletEndPosition);
-    const removeAction = cc.removeSelf(true);
+    const removeAction = cc.callFunc(() => {
+      this.node.parent.removeChild(bullet);
+      this.stageManager.bulletPool.put(bullet);
+    });
 
     bullet.runAction(cc.sequence(moveAction, removeAction));
 
