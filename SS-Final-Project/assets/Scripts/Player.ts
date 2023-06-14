@@ -336,6 +336,7 @@ export default class Player extends cc.Component {
       this.lives += 1
       this.item = false
       this.itemSprite.active = false
+      console.log(this.lives + " " + this.playerNo)
     }
     
   }

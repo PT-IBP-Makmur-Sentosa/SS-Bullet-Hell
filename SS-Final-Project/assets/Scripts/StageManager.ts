@@ -27,6 +27,8 @@ export default class StageManager extends cc.Component {
     @property(cc.Node)
     player = null;
     @property(cc.Node)
+    player1 = null;
+    @property(cc.Node)
     enemy = null;
     @property(cc.Node)
     gameover = null;
@@ -39,6 +41,7 @@ export default class StageManager extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     giveItem() {
         this.player.getComponent("Player").getItem()
+        this.player1.getComponent("Player").getItem()
     }
 
     gameOver() {
