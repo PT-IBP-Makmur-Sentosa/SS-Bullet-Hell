@@ -46,6 +46,8 @@ export default class StageManager extends cc.Component {
     backgroundMusic: cc.AudioClip = null;
     @property(cc.AudioClip)
     lobbyMusic: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    gameover_music: cc.AudioClip = null;
 
     private audioSource: cc.AudioSource = null;
 
@@ -58,6 +60,7 @@ export default class StageManager extends cc.Component {
     }
 
     gameOver() {
+        cc.audioEngine.playEffect(this.gameover_music, false);
         this.gameover.active = true
         this.enemy.active = false
         this.scheduleOnce(function () {
