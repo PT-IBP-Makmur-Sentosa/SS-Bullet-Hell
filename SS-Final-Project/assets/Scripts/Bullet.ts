@@ -12,6 +12,7 @@ export default class Bullet extends cc.Component {
 
   // when created, the bullet need to be placed at correct position and play animation.
   public init(node: cc.Node, anim: string, attack:number) {
+    //node.addChild(this.node)
     this.anim = this.getComponent(cc.Animation);
 
     this.setInitPos(node);

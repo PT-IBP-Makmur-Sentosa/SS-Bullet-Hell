@@ -29,6 +29,8 @@ export default class StageManager extends cc.Component {
     enemy = null;
     @property(cc.Node)
     gameover = null;
+    @property(cc.Node)
+    gameoverScore = null;
 
     @property(cc.Prefab)
     bulletPrefab: cc.Prefab = null;
@@ -69,9 +71,12 @@ export default class StageManager extends cc.Component {
 
         this.gameover.active = true
         this.enemy.active = false
+        this.gameoverScore.getComponent(cc.Label).string = this.scoreLabel.string
+        
         this.scheduleOnce(function () {
+            
             cc.director.loadScene("Lobby")
-        } , 2)
+        } , 3)
         this.saveScoreToFirebase(this.score)
     }
 
@@ -115,22 +120,21 @@ export default class StageManager extends cc.Component {
         conti.component = "StageManager";
         conti.handler = "Resume";
         conti.customEventData = "foobar";
-        cc.find("Canvas/pause/Continue").getComponent(cc.Button).clickEvents.push(conti);
+        cc.find("pause/Continue").getComponent(cc.Button).clickEvents.push(conti);
 
         let quit = new cc.Component.EventHandler();
         quit.target = this.node; // 这个 node 节点是你的事件处理代码组件所属的节点
         quit.component = "StageManager";
         quit.handler = "Quit";
         quit.customEventData = "foobar";
-        cc.find("Canvas/pause/Quit").getComponent(cc.Button).clickEvents.push(quit);
-
+        cc.find("pause/Quit").getComponent(cc.Button).clickEvents.push(quit);
     }
 
     Resume(event, customEventData){
         // Destroy pause board and resume the game!
         this.count = 0;
         cc.log("Resume");
-        // cc.find("Canvas/pause").destroy();
+        // cc.find("pause").destroy();
         this.enemy.active=true 
         this.PauseBoard.active=false
         cc.director.resume();
@@ -140,8 +144,10 @@ export default class StageManager extends cc.Component {
     Quit(event, customEventData){
         // Quit game
         this.count = 0;
-        cc.find("Canvas/pause").destroy();
-        cc.director.loadScene("setting");
+        //cc.find("pause").destroy();
+        this.Resume(event, customEventData)
+        this.saveScoreToFirebase(this.score)
+        cc.director.loadScene("Lobby");
     }
 
     Pause(event, customEventData) {
@@ -152,6 +158,7 @@ export default class StageManager extends cc.Component {
             // this.OFFPause();
             this.enemy.active=false
         this.count++;
+        cc.audioEngine.stopAllEffects()
         if(this.count==1){
             // Draw UI Life :
             // var pause = cc.instantiate(this.PauseBoard);
@@ -182,6 +189,17 @@ export default class StageManager extends cc.Component {
             cc.audioEngine.setMusicVolume(1);
 
         }
+
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref("users/" + user?.uid);
+        userRef.update({ bgm: currentVolume })
+            .then(() => {
+              console.log("BGM saved to Firebase");
+            })
+            .catch((error) => {
+              console.error("Error saving BGM to Firebase:", error);
+            })
     }
 
     increaseVolume_init() {
@@ -191,7 +209,7 @@ export default class StageManager extends cc.Component {
         volumeUp.handler = "IncreaseVolume";
         
         volumeUp.customEventData = "foobar";
-        cc.find("Canvas/pause/PlusButtonMsc").getComponent(cc.Button).clickEvents.push(volumeUp);
+        cc.find("pause/PlusButtonMsc").getComponent(cc.Button).clickEvents.push(volumeUp);
     }
 
     decreaseVolume_init() {
@@ -201,7 +219,7 @@ export default class StageManager extends cc.Component {
         volumeDown.handler = "DecreaseVolume";
         
         volumeDown.customEventData = "foobar";
-        cc.find("Canvas/pause/MinusButtonMsc").getComponent(cc.Button).clickEvents.push(volumeDown);
+        cc.find("pause/MinusButtonMsc").getComponent(cc.Button).clickEvents.push(volumeDown);
     }
 
     DecreaseVolume(event, customEventData) {
@@ -214,20 +232,95 @@ export default class StageManager extends cc.Component {
 
         if(currentVolume <0) {
             cc.audioEngine.setMusicVolume(0);
-
-
         }
+
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref("users/" + user?.uid);
+        userRef.update({ bgm: currentVolume })
+            .then(() => {
+              console.log("BGM saved to Firebase");
+            })
+            .catch((error) => {
+              console.error("Error saving BGM to Firebase:", error);
+            })
     }
 
-   
+    IncreaseFX(event, customEventData) {
+        console.log("increaseFX_init called");  // Added for debugging
+    
+        let currentVolume = cc.audioEngine.getEffectsVolume();
+        console.log(currentVolume)
+        
+        cc.audioEngine.setEffectsVolume(currentVolume + 0.1);
 
-   
+        if(currentVolume > 1) {
+            cc.audioEngine.setEffectsVolume(1);
+        }
+
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref("users/" + user?.uid);
+        userRef.update({ sfx: currentVolume })
+            .then(() => {
+              console.log("SFX saved to Firebase");
+            })
+            .catch((error) => {
+              console.error("Error saving SFX to Firebase:", error);
+            })
+    }
+
+    increaseFX_init() {
+        let volumeUp = new cc.Component.EventHandler();
+        volumeUp.target = this.node;
+        volumeUp.component = "StageManager";
+        volumeUp.handler = "IncreaseFX";
+        
+        volumeUp.customEventData = "foobar";
+        cc.find("pause/PlusButton").getComponent(cc.Button).clickEvents.push(volumeUp);
+    }
+
+    decreaseFX_init() {
+        let volumeDown =new cc.Component.EventHandler();
+        volumeDown.target = this.node;
+        volumeDown.component = "StageManager";
+        volumeDown.handler = "DecreaseFX";
+        
+        volumeDown.customEventData = "foobar";
+        cc.find("pause/MinusButton").getComponent(cc.Button).clickEvents.push(volumeDown);
+    }
+
+    DecreaseFX(event, customEventData) {
+        console.log("decreaseVolume called");  // Added for debugging
+    
+        let currentVolume = cc.audioEngine.getEffectsVolume();
+        console.log(currentVolume)
+        
+        cc.audioEngine.setEffectsVolume(currentVolume - 0.1);
+
+        if(currentVolume <0) {
+            cc.audioEngine.setEffectsVolume(0);
+        }
+
+        const user = firebase.auth().currentUser;
+        const db = firebase.database();
+        const userRef = db.ref("users/" + user?.uid);
+        userRef.update({ sfx: currentVolume })
+            .then(() => {
+              console.log("SFX saved to Firebase");
+            })
+            .catch((error) => {
+              console.error("Error saving SFX to Firebase:", error);
+            })
+    }
 
     start () {
         this.playBGM();
         this.Toggle_init();
-        this.increaseVolume_init(); 
+        this.increaseVolume_init();
+        this.increaseFX_init();  
         this.decreaseVolume_init();
+        this.decreaseFX_init();
         this.stageLabel.string = this.stageName;
         this.healthLabel.string = "HP X " + this.player.getComponent("Player").lives.toString()
         this.scoreLabel.string = "Score: " + this.score.toString()

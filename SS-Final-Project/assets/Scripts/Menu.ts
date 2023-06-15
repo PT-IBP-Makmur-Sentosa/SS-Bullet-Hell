@@ -100,8 +100,8 @@ export default class Menu extends cc.Component {
               selectedShipIndex: 0,
               shipUnLocked: [true, false, false, false, false],
               stage: [true, false, false],
-              bgm: 100,
-              sfx: 100,              
+              bgm: 1,
+              sfx: 1,              
               name: this.signupUsername.string,
             });
             this.signupSprite.node.active = false;

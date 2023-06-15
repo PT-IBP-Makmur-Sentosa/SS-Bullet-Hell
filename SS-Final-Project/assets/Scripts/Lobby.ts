@@ -31,19 +31,19 @@ class PlayerClass {
     }
   
     public static original(): PlayerClass {
-      return new PlayerClass(3, 3, "extra attack damage(+1 ATK)");
+      return new PlayerClass(3, 3, "Attack Buff");
     }
     public static plane1(): PlayerClass {
-      return new PlayerClass(4, 2, "invincible");
+      return new PlayerClass(4, 2, "Invincible");
     }
     public static plane2(): PlayerClass {
-      return new PlayerClass(2, 6, "extra attack speed(-0.05 interval)");
+      return new PlayerClass(2, 6, "Firerate Buff");
     }
     public static plane3(): PlayerClass {
-      return new PlayerClass(5, 3, "extra HP(+1 HP)");
+      return new PlayerClass(5, 3, "Heal");
     }
     public static plane4(): PlayerClass {
-      return new PlayerClass(4, 4, "double attack(2x ATK)");
+      return new PlayerClass(4, 4, "Double Damage");
     }
   }
 
@@ -115,32 +115,34 @@ export default class NewClass extends cc.Component {
             const stagesUnlocked = userData.stage;
             this.updateShipDisplay();
             this.updateShipStats();
-            if(stagesUnlocked[0]){
-                this.stage1Btn.node.opacity = 255;
-                this.stage1Btn.interactable = true;
-            }
-            else if (!stagesUnlocked[0]){
-                this.stage1Btn.node.opacity = 150;
-                this.stage1Btn.interactable = false;
-            }
+            cc.audioEngine.setMusicVolume(userData.bgm);
+            cc.audioEngine.setEffectsVolume(userData.sfx);
+            // if(stagesUnlocked[0]){
+            //     this.stage1Btn.node.opacity = 255;
+            //     this.stage1Btn.interactable = true;
+            // }
+            // else if (!stagesUnlocked[0]){
+            //     this.stage1Btn.node.opacity = 150;
+            //     this.stage1Btn.interactable = false;
+            // }
 
-            if(stagesUnlocked[1]){
-                this.stage2Btn.node.opacity = 255;
-                this.stage2Btn.interactable = true;
-            }
-            else if (!stagesUnlocked[1]){
-                this.stage2Btn.node.opacity = 150;
-                this.stage2Btn.interactable = false;
-            }
+            // if(stagesUnlocked[1]){
+            //     this.stage2Btn.node.opacity = 255;
+            //     this.stage2Btn.interactable = true;
+            // }
+            // else if (!stagesUnlocked[1]){
+            //     this.stage2Btn.node.opacity = 150;
+            //     this.stage2Btn.interactable = false;
+            // }
 
-            if(stagesUnlocked[2]){
-                this.stage3Btn.node.opacity = 255;
-                this.stage3Btn.interactable = true;
-            }
-            else if (!stagesUnlocked[2]){
-                this.stage3Btn.node.opacity = 150;
-                this.stage3Btn.interactable = false;
-            }            
+            // if(stagesUnlocked[2]){
+            //     this.stage3Btn.node.opacity = 255;
+            //     this.stage3Btn.interactable = true;
+            // }
+            // else if (!stagesUnlocked[2]){
+            //     this.stage3Btn.node.opacity = 150;
+            //     this.stage3Btn.interactable = false;
+            // }            
           } else {
             console.log("User not found");
           }
@@ -285,7 +287,7 @@ export default class NewClass extends cc.Component {
                     selectedShipIndex: this.currentShipIndex,
                 })
             }
-            cc.director.loadScene("Stage1")
+            cc.director.loadScene("Singleplayer")
         }
         else if(customEventData == "2"){
             //update firebase
@@ -297,19 +299,19 @@ export default class NewClass extends cc.Component {
                     selectedShipIndex: this.currentShipIndex,
                 })
             }
-            cc.director.loadScene("Stage2")
+            cc.director.loadScene("Stage1")
         }
-        else if(customEventData == "3"){
-            //update firebase
-            if(this.availableShip[this.currentShipIndex]){
-                const user = firebase.auth().currentUser;
-                const db = firebase.database();
-                const userRef = db.ref('users/' + user?.uid);
-                userRef.update({
-                    selectedShipIndex: this.currentShipIndex,
-                })
-            }
-            cc.director.loadScene("Stage3")
-        }
+        // else if(customEventData == "3"){
+        //     //update firebase
+        //     if(this.availableShip[this.currentShipIndex]){
+        //         const user = firebase.auth().currentUser;
+        //         const db = firebase.database();
+        //         const userRef = db.ref('users/' + user?.uid);
+        //         userRef.update({
+        //             selectedShipIndex: this.currentShipIndex,
+        //         })
+        //     }
+        //     cc.director.loadScene("Stage3")
+        // }
     }
 }

@@ -40,7 +40,7 @@ class PlayerClass {
     return new PlayerClass(4, 2, "Invincible"); // Invulnerable
   }
   public static plane2(): PlayerClass {
-    return new PlayerClass(2, 6, "Firerate Buff"); // -0.05
+    return new PlayerClass(2, 6, "Firerate Buff"); // -0.15
   }
   public static plane3(): PlayerClass {
     return new PlayerClass(5, 3, "Heal"); // +1 HP
@@ -59,6 +59,10 @@ export default class Player extends cc.Component {
   shipCollider = [];
   @property(cc.PhysicsPolygonCollider)
   mainCollider = null
+   @property(cc.Node)
+  itemSprite = null
+  @property(cc.Node)
+  cooldownOverlay = null
   @property()
   playerNo = 0
   @property(cc.AudioClip)
@@ -74,6 +78,7 @@ export default class Player extends cc.Component {
   private bulletanim: string = "";
   private firerate: number = 0.3;
   private duration: number = 10
+  private item: boolean = false
 
   @property(cc.Prefab)
   bulletPrefab: cc.Prefab = null;
@@ -84,6 +89,7 @@ export default class Player extends cc.Component {
   private sDown: boolean = false;
   private dDown: boolean = false;
   private kDown: boolean = false;
+  private iDown: boolean = false;
 
   @property
   playerSpeed: number = 150;
@@ -95,6 +101,7 @@ export default class Player extends cc.Component {
   private anim = null; //this will use to get animation component
   private animateState = null; //this will use to record animationState
   private currentShipIndex: number = 0;
+  private audioID: number
 
   async onLoad() {
     this.anim = this.getComponent(cc.Animation);
@@ -172,6 +179,9 @@ export default class Player extends cc.Component {
     if(event.keyCode == cc.macro.KEY.k){
       this.kDown = true
     }
+    if(event.keyCode == cc.macro.KEY.i){
+      this.iDown = true
+    }
     if(this.playerNo == 0){
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = true;
@@ -216,6 +226,9 @@ export default class Player extends cc.Component {
     if(event.keyCode == cc.macro.KEY.k){
       this.kDown = false
     }
+    if(event.keyCode == cc.macro.KEY.i){
+      this.iDown = false
+    }
     if(this.playerNo == 0){
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = false;
@@ -234,8 +247,7 @@ export default class Player extends cc.Component {
         this.once = false;
         //unschedule the bullet
         this.unschedule(this.createBullet);
-        cc.audioEngine.pauseEffect(this.shoot_music);
-        
+        cc.audioEngine.stopEffect(this.audioID);
       }
     }
     else if(this.playerNo == 1){
@@ -256,8 +268,15 @@ export default class Player extends cc.Component {
         this.once = false;
         //unschedule the bullet
         this.unschedule(this.createBullet);
-        cc.audioEngine.pauseEffect(this.shoot_music);
+        cc.audioEngine.stopEffect(this.audioID);
       }
+    }
+  }
+
+  getItem(){
+    if(this.item == false){
+      this.item = true
+      this.itemSprite.active = true
     }
   }
 
@@ -265,6 +284,7 @@ export default class Player extends cc.Component {
   coolDown(dt): void{
     if(this.cooldown == true){
       this.timed += dt
+      this.cooldownOverlay.height = this.timed / 15 * 50
       //console.log(this.timed)
       if(this.timed >= 15){
         this.timed = 15
@@ -277,6 +297,8 @@ export default class Player extends cc.Component {
       this.cooldown = true
       this.scheduleOnce(function () {
         this.cooldown = false
+        this.cooldownOverlay.height = 0
+        this.timed = 0
       }, 15)
       if(this.skill == "Attack Buff"){
         this.attack += 1
@@ -295,13 +317,15 @@ export default class Player extends cc.Component {
           this.isReborn = false;
           this.anim.stop("hit");
           this.mainCollider.enabled = true;
-        }, 3);
+        }, 5);
       }
       else if(this.skill == "Firerate Buff"){
-        this.firerate -= 0.05
+        this.firerate -= 0.15
         console.log(this.firerate)
+        this.once = false
         this.scheduleOnce(function () {
-          this.firerate += 0.05
+          this.firerate += 0.15
+          this.once = false
           console.log(this.firerate)
         }, this.duration)
       }
@@ -316,6 +340,13 @@ export default class Player extends cc.Component {
           console.log(this.attack)
         }, this.duration)
       }
+    }
+
+    if(this.iDown && this.item == true){
+      this.lives += 1
+      this.item = false
+      this.itemSprite.active = false
+      console.log(this.lives + " " + this.playerNo)
     }
     
   }
@@ -367,7 +398,7 @@ export default class Player extends cc.Component {
         this.mainCollider.enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
-      cc.find("StageManager").getComponent("StageManager").gameOver();
+      if(this.playerNo == 0) cc.find("StageManager").getComponent("StageManager").gameOver();
       this.node.active = false;
     }
   }
@@ -379,11 +410,11 @@ export default class Player extends cc.Component {
   playerAnimation(): void {
     if (this.spaceDown && !this.once) {
       this.once = true;
-      this.createBullet();
+      this.createBullet()
       this.schedule(this.createBullet, this.firerate);
       // this.animateState = this.anim.play("shoot");
       // cc.log(this.attack);
-      cc.audioEngine.playEffect(this.shoot_music, true);
+      this.audioID = cc.audioEngine.playEffect(this.shoot_music, true);
     }
     if (this.wDown || this.sDown) {
       this.anim.playAdditive("player_updown");
@@ -400,6 +431,7 @@ export default class Player extends cc.Component {
       !this.isReborn
     ) {
       this.isDead = true;
+      cc.audioEngine.stopEffect(this.audioID);
       // console.log("mati")
       //enable isdead
     }
