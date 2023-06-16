@@ -16,10 +16,16 @@ export default class OpVideoControls extends cc.Component {
     @property(cc.AudioClip)
     bgm: cc.AudioClip = null;
 
+    @property(cc.Node)
+    overlay: cc.Node = null;
+
     private audioBGM: any = null
     playVideo() {
+        this.overlay.active = false
+        this.videoPlayer.stayOnBottom = false
         this.videoPlayer.play();
-        this.audioBGM = cc.audioEngine.playMusic(this.bgm, true);
+        cc.audioEngine.setMusicVolume(1.0)
+        cc.audioEngine.playMusic(this.bgm, true);
     }
     onVideoCompleted() {
         // Load the new scene here
@@ -29,8 +35,8 @@ export default class OpVideoControls extends cc.Component {
         }, 0.5)
       }
     
-    start () {
-        this.videoPlayer.node.on('ready-to-play', this.playVideo, this);
+    onLoad () {
+        //this.videoPlayer.node.on('ready-to-play', this.playVideo, this);
         this.videoPlayer.node.on("completed", this.onVideoCompleted, this);
     }
 
