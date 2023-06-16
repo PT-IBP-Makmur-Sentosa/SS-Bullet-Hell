@@ -58,6 +58,7 @@ export default class EnemySpawner extends cc.Component {
 
   pooling(enemy: cc.Node, HP: number, baseHP: number) {
     this.enemyPool.put(enemy);
+    // enemy.destroy()
     // HP = baseHP
   }
 

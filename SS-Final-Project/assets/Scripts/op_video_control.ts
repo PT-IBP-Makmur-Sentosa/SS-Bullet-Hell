@@ -16,21 +16,23 @@ export default class OpVideoControls extends cc.Component {
     @property(cc.AudioClip)
     bgm: cc.AudioClip = null;
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad () {
-        this.videoPlayer.node.on('ready-to-play', this.playVideo, this);
-        this.videoPlayer.node.on("completed", this.onVideoCompleted, this);
-    }
+    private audioBGM: any = null
     playVideo() {
         this.videoPlayer.play();
-        cc.audioEngine.playMusic(this.bgm, true);
+        this.audioBGM = cc.audioEngine.playMusic(this.bgm, true);
     }
     onVideoCompleted() {
         // Load the new scene here
-        cc.director.loadScene("Main Menu");
+        cc.audioEngine.stopMusic()
+        this.scheduleOnce(function () {
+            cc.director.loadScene("Main Menu");
+        }, 0.5)
       }
-    // start () {}
+    
+    start () {
+        this.videoPlayer.node.on('ready-to-play', this.playVideo, this);
+        this.videoPlayer.node.on("completed", this.onVideoCompleted, this);
+    }
 
     // update (dt) {}
 }

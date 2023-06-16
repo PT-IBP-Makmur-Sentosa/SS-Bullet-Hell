@@ -274,7 +274,7 @@
       "__uuid__": "8db84ccf-227b-4a54-bf54-3dce2b8c6261"
     },
     "_volume": 1,
-    "_mute": true,
+    "_mute": false,
     "_isFullscreen": false,
     "_N$isFullscreen": false,
     "_stayOnBottom": false,

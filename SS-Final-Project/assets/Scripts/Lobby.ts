@@ -257,7 +257,7 @@ export default class NewClass extends cc.Component {
     const db = firebase.database();
     const usersRef = db.ref('users');
     const topUsers = [];
-    await usersRef.orderByChild('score').limitToLast(3).once('value', (snapshot) => {
+    await usersRef.orderByChild('score').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const uid = childSnapshot.key;
         const userData = childSnapshot.val();
