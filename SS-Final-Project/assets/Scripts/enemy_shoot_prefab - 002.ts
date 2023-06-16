@@ -15,6 +15,9 @@ export default class EnemyShooter1 extends cc.Component {
   @property(cc.AnimationClip)
   idle_anim: cc.AnimationClip = null;
 
+  @property()
+  type: number = 0
+
   private enemyHP: number = 8; // HP property for the enemy
 
   private enemyShootInterval: number = 1.5;
@@ -100,32 +103,38 @@ export default class EnemyShooter1 extends cc.Component {
 
       if (this.enemyHP <= 0 && !this.isDying) {
         this.isDying = true;
-        cc.log("enemy killed");
+        // cc.log("enemy killed");
 
         // Disable the collider to prevent further collision
-        this.getComponent(cc.PhysicsCollider).enabled = false;
+        this.getComponent(cc.PhysicsChainCollider).enabled = false;
 
         // Play the die animation
         let animation = this.getComponent(cc.Animation);
         let state = animation.play("enemy_die");
 
         cc.audioEngine.playEffect(this.die_sound, false);
-
+        this.stageManager.score += 500;
+          var rand = Math.random();
+          if (rand < 0.1) {
+            // console.log("powerup");
+            this.stageManager.giveItem();
+          }
         // After animation is complete
         this.scheduleOnce(function () {
           this.node.isDead = false;
-          this.stageManager.score += 500;
-          var rand = Math.random();
-          if (rand < 0.1) {
-            console.log("powerup");
-            this.stageManager.giveItem();
-          }
+          
           this.enemyHP = 8; // Reset the enemy HP
 
           // Pool the enemy node after a delay
           var spawner = cc.find("New Node");
           // play idle animation
-          animation.play("enemy_idle");
+          if(this.type == 2){
+            animation.play("enemy_2_idle");
+          }
+          else if(this.type == 3){
+            animation.play("enemy_3_idle");
+          }
+          
           spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 8);
 
           // Reset the isDying flag
@@ -135,7 +144,7 @@ export default class EnemyShooter1 extends cc.Component {
           this.getComponent(cc.Sprite).spriteFrame = this.originalSpriteFrame;
 
           // Re-enable the collider for future use
-          this.getComponent(cc.PhysicsCollider).enabled = true;
+          this.getComponent(cc.PhysicsChainCollider).enabled = true;
         }, state.duration); // Schedule removal after the length of the death animation
       }
     }

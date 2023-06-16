@@ -115,7 +115,7 @@ export default class Player extends cc.Component {
     // cc.PhysicsManager.DrawBits.e_shapeBit;
 
     this.bulletPool = new cc.NodePool("Bullet");
-    let maxBulletNum = 500;
+    let maxBulletNum = 50;
     for (let i: number = 0; i < maxBulletNum; i++) {
       let bullet = cc.instantiate(this.bulletPrefab);
       this.bulletPool.put(bullet);
@@ -129,7 +129,7 @@ export default class Player extends cc.Component {
         const userData = snapshot.val();
         this.currentShipIndex = userData.selectedShipIndex;
         const stagesUnlocked = userData.stage;
-        cc.log("stagesUnlocked: " + stagesUnlocked);
+        // cc.log("stagesUnlocked: " + stagesUnlocked);
         this.getComponent(cc.Sprite).spriteFrame =
           this.shipSprites[this.currentShipIndex];
         this.getComponent(cc.PhysicsPolygonCollider).points =
@@ -266,7 +266,9 @@ export default class Player extends cc.Component {
         this.once = false;
         //unschedule the bullet
         this.unschedule(this.createBullet);
-        cc.audioEngine.stopEffect(this.audioID);
+        this.scheduleOnce(function () {
+          cc.audioEngine.stopEffect(this.audioID);
+        }, 0.3)
       }
     }
   }
@@ -302,13 +304,13 @@ export default class Player extends cc.Component {
       }, 15);
       if (this.skill == "Attack Buff") {
         this.attack += 1;
-        console.log(this.attack);
+        // console.log(this.attack);
         this.scheduleOnce(function () {
           this.attack -= 1;
-          console.log(this.attack);
+          // console.log(this.attack);
         }, this.duration);
       } else if (this.skill == "Invincible") {
-        console.log("invul");
+        // console.log("invul");
         this.isReborn = true;
         this.anim.play("hit");
         this.mainCollider.enabled = false;
@@ -319,21 +321,21 @@ export default class Player extends cc.Component {
         }, 5);
       } else if (this.skill == "Firerate Buff") {
         this.firerate -= 0.15;
-        console.log(this.firerate);
+        // console.log(this.firerate);
         this.once = false;
         this.scheduleOnce(function () {
           this.firerate += 0.15;
           this.once = false;
-          console.log(this.firerate);
+          // console.log(this.firerate);
         }, this.duration);
       } else if (this.skill == "Heal") {
         this.lives += 1;
       } else if (this.skill == "Double Damage") {
         this.attack *= 2;
-        console.log(this.attack);
+        // console.log(this.attack);
         this.scheduleOnce(function () {
           this.attack /= 2;
-          console.log(this.attack);
+          // console.log(this.attack);
         }, this.duration);
       }
     }
@@ -342,7 +344,7 @@ export default class Player extends cc.Component {
       this.lives += 1;
       this.item = false;
       this.itemSprite.active = false;
-      console.log(this.lives + " " + this.playerNo);
+      // console.log(this.lives + " " + this.playerNo);
     }
   }
 
@@ -367,10 +369,10 @@ export default class Player extends cc.Component {
     } else if (this.node.x > cc.winSize.width / 2 - this.node.width / 2) {
       this.node.x = cc.winSize.width / 2 - this.node.width / 2;
     }
-    if (this.node.y < -580 / 2 + this.node.height / 2) {
-      this.node.y = -580 / 2 + this.node.height / 2;
-    } else if (this.node.y > 580 / 2 - this.node.height / 2) {
-      this.node.y = 580 / 2 - this.node.height / 2;
+    if (this.node.y < -640 / 2 + this.node.height / 2) {
+      this.node.y = -640 / 2 + this.node.height / 2;
+    } else if (this.node.y > 530 / 2 - this.node.height / 2) {
+      this.node.y = 530 / 2 - this.node.height / 2;
     }
   }
 
@@ -384,18 +386,20 @@ export default class Player extends cc.Component {
       stageManager.health = this.lives;
       //cc.log("lives: " + this.lives);
       this.anim.play("hit");
-      this.mainCollider.enabled = false;
+      this.getComponent(cc.PhysicsPolygonCollider).enabled = false;
       this.scheduleOnce(() => {
         this.isReborn = false;
         this.isDead = false;
 
         this.anim.stop("hit");
-        this.mainCollider.enabled = true;
+        // console.log(this.getComponent(cc.PhysicsPolygonCollider).enabled)
+        this.getComponent(cc.PhysicsPolygonCollider).enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
       if (this.playerNo == 0)
         cc.find("StageManager").getComponent("StageManager").gameOver();
       this.node.active = false;
+      cc.audioEngine.stopEffect(this.audioID);
     }
   }
 
@@ -426,9 +430,7 @@ export default class Player extends cc.Component {
         otherCollider.node.group == "B_enemy") &&
       !this.isReborn
     ) {
-      this.isDead = true;
-      cc.audioEngine.stopEffect(this.audioID);
-      // console.log("mati")
+      this.isDead = true
       //enable isdead
     }
   }

@@ -30,10 +30,10 @@ export default class LobbyManager extends cc.Component {
     }
 
     IncreaseVolume(event, customEventData) {
-        console.log("increaseVolume_init called");  // Added for debugging
+        // console.log("increaseVolume_init called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getMusicVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setMusicVolume(currentVolume + 0.1);
 
@@ -75,10 +75,10 @@ export default class LobbyManager extends cc.Component {
     }
 
     DecreaseVolume(event, customEventData) {
-        console.log("decreaseVolume called");  // Added for debugging
+        // console.log("decreaseVolume called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getMusicVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setMusicVolume(currentVolume - 0.1);
 
@@ -99,10 +99,10 @@ export default class LobbyManager extends cc.Component {
     }
 
     IncreaseFX(event, customEventData) {
-        console.log("increaseFX_init called");  // Added for debugging
+        // console.log("increaseFX_init called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getEffectsVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setEffectsVolume(currentVolume + 0.1);
 
@@ -143,10 +143,10 @@ export default class LobbyManager extends cc.Component {
     }
 
     DecreaseFX(event, customEventData) {
-        console.log("decreaseVolume called");  // Added for debugging
+        // console.log("decreaseVolume called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getEffectsVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setEffectsVolume(currentVolume - 0.1);
 

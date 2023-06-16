@@ -127,7 +127,7 @@ export default class level_1 extends cc.Component {
     Resume(event, customEventData){
         // Destroy pause board and resume the game!
         this.count = 0;
-        cc.log("Resume");
+        // cc.log("Resume");
         cc.find("Canvas/pause").destroy();
         cc.director.resume();
         this.resumeBGM();
@@ -159,11 +159,11 @@ export default class level_1 extends cc.Component {
                 // Init resume btns.
                 this.resume_init();
 
-                console.log("pause"); 
+                // console.log("pause"); 
                 // this.stopBGM();
                 cc.director.pause();
             }else{
-                cc.log("Cannot press Pause since Now pausing.");
+                // cc.log("Cannot press Pause since Now pausing.");
             }
     }
 
@@ -235,7 +235,7 @@ export default class level_1 extends cc.Component {
     // }
 
     IncreaseVolume(event, customEventData) {
-        console.log("increaseVolume_init called");  // Added for debugging
+        // console.log("increaseVolume_init called");  // Added for debugging
 
         let currentVolume = cc.audioEngine.getMusicVolume();
         if(currentVolume < 1) {

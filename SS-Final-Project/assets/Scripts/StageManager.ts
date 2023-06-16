@@ -133,7 +133,7 @@ export default class StageManager extends cc.Component {
     Resume(event, customEventData){
         // Destroy pause board and resume the game!
         this.count = 0;
-        cc.log("Resume");
+        // cc.log("Resume");
         // cc.find("pause").destroy();
         this.enemy.active=true 
         this.PauseBoard.active=false
@@ -169,19 +169,19 @@ export default class StageManager extends cc.Component {
             this.resume_init();
 
 
-            console.log("pause"); 
+            // console.log("pause"); 
             // this.stopBGM();
             cc.director.pause();
         }else{
-            cc.log("Cannot press Pause since Now pausing.");
+            // cc.log("Cannot press Pause since Now pausing.");
         }
 }
 
     IncreaseVolume(event, customEventData) {
-        console.log("increaseVolume_init called");  // Added for debugging
+        // console.log("increaseVolume_init called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getMusicVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setMusicVolume(currentVolume + 0.1);
 
@@ -223,10 +223,10 @@ export default class StageManager extends cc.Component {
     }
 
     DecreaseVolume(event, customEventData) {
-        console.log("decreaseVolume called");  // Added for debugging
+        // console.log("decreaseVolume called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getMusicVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setMusicVolume(currentVolume - 0.1);
 
@@ -247,10 +247,10 @@ export default class StageManager extends cc.Component {
     }
 
     IncreaseFX(event, customEventData) {
-        console.log("increaseFX_init called");  // Added for debugging
+        // console.log("increaseFX_init called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getEffectsVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setEffectsVolume(currentVolume + 0.1);
 
@@ -291,10 +291,10 @@ export default class StageManager extends cc.Component {
     }
 
     DecreaseFX(event, customEventData) {
-        console.log("decreaseVolume called");  // Added for debugging
+        // console.log("decreaseVolume called");  // Added for debugging
     
         let currentVolume = cc.audioEngine.getEffectsVolume();
-        console.log(currentVolume)
+        // console.log(currentVolume)
         
         cc.audioEngine.setEffectsVolume(currentVolume - 0.1);
 
