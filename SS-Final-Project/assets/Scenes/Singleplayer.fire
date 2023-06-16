@@ -2321,6 +2321,9 @@
     "player_die": {
       "__uuid__": "5fe310aa-85ee-4ee6-ad53-c1bc49196fae"
     },
+    "skill_effect": {
+      "__uuid__": "b70bc870-a9b5-4423-bd52-f8452dd7d8c1"
+    },
     "bulletPrefab": {
       "__uuid__": "aca0df12-4565-498f-b102-5dd74a41f06c"
     },
@@ -3950,6 +3953,7 @@
     "player_die": {
       "__uuid__": "5fe310aa-85ee-4ee6-ad53-c1bc49196fae"
     },
+    "skill_effect": null,
     "bulletPrefab": {
       "__uuid__": "aca0df12-4565-498f-b102-5dd74a41f06c"
     },

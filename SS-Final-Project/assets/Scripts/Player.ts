@@ -58,27 +58,29 @@ export default class Player extends cc.Component {
   @property([cc.PolygonCollider])
   shipCollider = [];
   @property(cc.PhysicsPolygonCollider)
-  mainCollider = null
-   @property(cc.Node)
-  itemSprite = null
+  mainCollider = null;
   @property(cc.Node)
-  cooldownOverlay = null
+  itemSprite = null;
+  @property(cc.Node)
+  cooldownOverlay = null;
   @property()
-  playerNo = 0
+  playerNo = 0;
   @property(cc.AudioClip)
   shoot_music: cc.AudioClip = null;
   @property(cc.AudioClip)
   player_die: cc.AudioClip = null;
 
+  @property(cc.AudioClip)
+  skill_effect: cc.AudioClip = null;
 
-  private cooldown: boolean = false
+  private cooldown: boolean = false;
   private lives: number = 10000;
   private attack: number = 0;
   private skill: string = "";
   private bulletanim: string = "";
   private firerate: number = 0.3;
-  private duration: number = 10
-  private item: boolean = false
+  private duration: number = 10;
+  private item: boolean = false;
 
   @property(cc.Prefab)
   bulletPrefab: cc.Prefab = null;
@@ -101,7 +103,7 @@ export default class Player extends cc.Component {
   private anim = null; //this will use to get animation component
   private animateState = null; //this will use to record animationState
   private currentShipIndex: number = 0;
-  private audioID: number
+  private audioID: number;
 
   async onLoad() {
     this.anim = this.getComponent(cc.Animation);
@@ -171,18 +173,18 @@ export default class Player extends cc.Component {
     this.playerMovement(dt);
     this.playerReborn(dt);
     this.playerAnimation();
-    this.playerUtil()
-    this.coolDown(dt)
+    this.playerUtil();
+    this.coolDown(dt);
   }
 
   onKeyDown(event): void {
-    if(event.keyCode == cc.macro.KEY.k){
-      this.kDown = true
+    if (event.keyCode == cc.macro.KEY.k) {
+      this.kDown = true;
     }
-    if(event.keyCode == cc.macro.KEY.i){
-      this.iDown = true
+    if (event.keyCode == cc.macro.KEY.i) {
+      this.iDown = true;
     }
-    if(this.playerNo == 0){
+    if (this.playerNo == 0) {
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = true;
       }
@@ -198,10 +200,8 @@ export default class Player extends cc.Component {
       if (event.keyCode == cc.macro.KEY.space && !this.once) {
         this.spaceDown = true;
         // cc.audioEngine.playEffect(this.shoot_music, false);
-
       }
-    }
-    else if(this.playerNo == 1){
+    } else if (this.playerNo == 1) {
       if (event.keyCode == cc.macro.KEY.up) {
         this.wDown = true;
       }
@@ -219,17 +219,16 @@ export default class Player extends cc.Component {
         // cc.audioEngine.playEffect(this.shoot_music, true);
       }
     }
-    
   }
 
   onKeyUp(event): void {
-    if(event.keyCode == cc.macro.KEY.k){
-      this.kDown = false
+    if (event.keyCode == cc.macro.KEY.k) {
+      this.kDown = false;
     }
-    if(event.keyCode == cc.macro.KEY.i){
-      this.iDown = false
+    if (event.keyCode == cc.macro.KEY.i) {
+      this.iDown = false;
     }
-    if(this.playerNo == 0){
+    if (this.playerNo == 0) {
       if (event.keyCode == cc.macro.KEY.w) {
         this.wDown = false;
       }
@@ -249,8 +248,7 @@ export default class Player extends cc.Component {
         this.unschedule(this.createBullet);
         cc.audioEngine.stopEffect(this.audioID);
       }
-    }
-    else if(this.playerNo == 1){
+    } else if (this.playerNo == 1) {
       if (event.keyCode == cc.macro.KEY.up) {
         this.wDown = false;
       }
@@ -273,43 +271,44 @@ export default class Player extends cc.Component {
     }
   }
 
-  getItem(){
-    if(this.item == false){
-      this.item = true
-      this.itemSprite.active = true
+  getItem() {
+    if (this.item == false) {
+      this.item = true;
+      this.itemSprite.active = true;
     }
   }
 
-  timed = 0
-  coolDown(dt): void{
-    if(this.cooldown == true){
-      this.timed += dt
-      this.cooldownOverlay.height = this.timed / 15 * 50
+  timed = 0;
+  coolDown(dt): void {
+    if (this.cooldown == true) {
+      this.timed += dt;
+      this.cooldownOverlay.height = (this.timed / 15) * 50;
       //console.log(this.timed)
-      if(this.timed >= 15){
-        this.timed = 15
+      if (this.timed >= 15) {
+        this.timed = 15;
       }
     }
   }
 
-  playerUtil(): void{
-    if(!this.cooldown && this.kDown){
-      this.cooldown = true
+  playerUtil(): void {
+    if (!this.cooldown && this.kDown) {
+      // play sound effect
+      cc.audioEngine.playEffect(this.skill_effect, false);
+      this.cooldown = true;
       this.scheduleOnce(function () {
-        this.cooldown = false
-        this.cooldownOverlay.height = 0
-        this.timed = 0
-      }, 15)
-      if(this.skill == "Attack Buff"){
-        this.attack += 1
-        console.log(this.attack)
+        this.cooldown = false;
+        this.cooldownOverlay.height = 0;
+        this.timed = 0;
+      }, 15);
+      if (this.skill == "Attack Buff") {
+        this.attack += 1;
+        console.log(this.attack);
         this.scheduleOnce(function () {
-          this.attack -= 1
-          console.log(this.attack)
-        }, this.duration)
-      }
-      else if(this.skill == "Invincible"){
-        console.log("invul")
+          this.attack -= 1;
+          console.log(this.attack);
+        }, this.duration);
+      } else if (this.skill == "Invincible") {
+        console.log("invul");
         this.isReborn = true;
         this.anim.play("hit");
         this.mainCollider.enabled = false;
@@ -318,37 +317,33 @@ export default class Player extends cc.Component {
           this.anim.stop("hit");
           this.mainCollider.enabled = true;
         }, 5);
-      }
-      else if(this.skill == "Firerate Buff"){
-        this.firerate -= 0.15
-        console.log(this.firerate)
-        this.once = false
+      } else if (this.skill == "Firerate Buff") {
+        this.firerate -= 0.15;
+        console.log(this.firerate);
+        this.once = false;
         this.scheduleOnce(function () {
-          this.firerate += 0.15
-          this.once = false
-          console.log(this.firerate)
-        }, this.duration)
-      }
-      else if(this.skill == "Heal"){
-        this.lives += 1
-      }
-      else if(this.skill == "Double Damage"){
-        this.attack *= 2
-        console.log(this.attack)
+          this.firerate += 0.15;
+          this.once = false;
+          console.log(this.firerate);
+        }, this.duration);
+      } else if (this.skill == "Heal") {
+        this.lives += 1;
+      } else if (this.skill == "Double Damage") {
+        this.attack *= 2;
+        console.log(this.attack);
         this.scheduleOnce(function () {
-          this.attack /= 2
-          console.log(this.attack)
-        }, this.duration)
+          this.attack /= 2;
+          console.log(this.attack);
+        }, this.duration);
       }
     }
 
-    if(this.iDown && this.item == true){
-      this.lives += 1
-      this.item = false
-      this.itemSprite.active = false
-      console.log(this.lives + " " + this.playerNo)
+    if (this.iDown && this.item == true) {
+      this.lives += 1;
+      this.item = false;
+      this.itemSprite.active = false;
+      console.log(this.lives + " " + this.playerNo);
     }
-    
   }
 
   playerMovement(dt): void {
@@ -384,7 +379,7 @@ export default class Player extends cc.Component {
       // this.resetPosition();
       this.isReborn = true;
       this.lives--;
-      cc.audioEngine.playEffect(this.player_die,false)
+      cc.audioEngine.playEffect(this.player_die, false);
       var stageManager = cc.find("StageManager").getComponent("StageManager");
       stageManager.health = this.lives;
       //cc.log("lives: " + this.lives);
@@ -398,7 +393,8 @@ export default class Player extends cc.Component {
         this.mainCollider.enabled = true;
       }, this.rebornTime);
     } else if (!this.lives) {
-      if(this.playerNo == 0) cc.find("StageManager").getComponent("StageManager").gameOver();
+      if (this.playerNo == 0)
+        cc.find("StageManager").getComponent("StageManager").gameOver();
       this.node.active = false;
     }
   }
@@ -410,7 +406,7 @@ export default class Player extends cc.Component {
   playerAnimation(): void {
     if (this.spaceDown && !this.once) {
       this.once = true;
-      this.createBullet()
+      this.createBullet();
       this.schedule(this.createBullet, this.firerate);
       // this.animateState = this.anim.play("shoot");
       // cc.log(this.attack);

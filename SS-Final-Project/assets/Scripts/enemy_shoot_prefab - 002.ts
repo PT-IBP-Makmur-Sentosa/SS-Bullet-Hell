@@ -9,16 +9,22 @@ export default class EnemyShooter1 extends cc.Component {
   @property({ type: cc.Prefab })
   private bulletPrefab: cc.Prefab = null;
 
+  @property(cc.AudioClip)
+  die_sound: cc.AudioClip = null;
+
+  @property(cc.AnimationClip)
+  idle_anim: cc.AnimationClip = null;
+
   private enemyHP: number = 8; // HP property for the enemy
 
   private enemyShootInterval: number = 1.5;
   private minBulletCount: number = 1; // Minimum number of bullets to shoot
   private maxBulletCount: number = 3; // Maximum number of bullets to shoot
-  private stageManager:any = null;
+  private stageManager: any = null;
 
   onLoad() {
     this.scheduleShoot();
-    this.stageManager = cc.find("StageManager").getComponent("StageManager")
+    this.stageManager = cc.find("StageManager").getComponent("StageManager");
   }
 
   scheduleShoot(): void {
@@ -27,17 +33,19 @@ export default class EnemyShooter1 extends cc.Component {
     }, this.enemyShootInterval);
   }
 
-  bullet = null
-  
+  bullet = null;
+
   shoot(): void {
-    const bulletCount = randomRangeInt(this.minBulletCount, this.maxBulletCount);
-    
+    const bulletCount = randomRangeInt(
+      this.minBulletCount,
+      this.maxBulletCount
+    );
+
     for (let i = 0; i < bulletCount; i++) {
-      if(this.stageManager.bulletPool.size() > 0){
+      if (this.stageManager.bulletPool.size() > 0) {
         this.bullet = this.stageManager.bulletPool.get();
         //console.log(this.stageManager.bulletPool.size())
-      }
-      else{
+      } else {
         this.bullet = cc.instantiate(this.bulletPrefab);
         //console.log("new")
       }
@@ -74,33 +82,61 @@ export default class EnemyShooter1 extends cc.Component {
   }
 
   first = false;
-  onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
+
+  isDying = false;
+  onBeginContact(
+    contact: cc.PhysicsContact,
+    selfCollider: cc.PhysicsCollider,
+    otherCollider: cc.PhysicsCollider
+  ): void {
     const otherGroup = otherCollider.node.group;
-    if (otherGroup === 'B_player' && !this.first) {
-      this.first = true
-      // Decrease enemy HP when collided with the player
-      var attack = 0;
-      attack = otherCollider.getComponent("Bullet").attack;
+    if (otherGroup === "B_player" && !this.first) {
+      this.first = true;
+      var attack = otherCollider.getComponent("Bullet").attack;
       this.enemyHP -= attack;
       this.scheduleOnce(function () {
-        this.first = false
-      }, 0.05)
-      //if (this.enemyHP > 0 || this.enemyHP < 29) {console.log(this.enemyHP);}
-      if (this.enemyHP <= 0) {
+        this.first = false;
+      }, 0.05);
+
+      if (this.enemyHP <= 0 && !this.isDying) {
+        this.isDying = true;
+        cc.log("enemy killed");
+
+        // Disable the collider to prevent further collision
+        this.getComponent(cc.PhysicsCollider).enabled = false;
+
+        // Play the die animation
+        let animation = this.getComponent(cc.Animation);
+        let state = animation.play("enemy_die");
+
+        cc.audioEngine.playEffect(this.die_sound, false);
+
+        // After animation is complete
         this.scheduleOnce(function () {
-          this.enemyHP = 8
-        }, 0.1)
-        // Destroy the enemy when HP reaches 0 or below
-        var spawner = cc.find("New Node")
-        spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 8)
-        //this.node.destroy();
-        //console.log('Enemy destroyed');
-        this.stageManager.score += 500;
-        var rand = Math.random()
-        if(rand < 0.1){
-          console.log("powerup")
-          this.stageManager.giveItem()
-        }
+          this.node.isDead = false;
+          this.stageManager.score += 500;
+          var rand = Math.random();
+          if (rand < 0.1) {
+            console.log("powerup");
+            this.stageManager.giveItem();
+          }
+          this.enemyHP = 8; // Reset the enemy HP
+
+          // Pool the enemy node after a delay
+          var spawner = cc.find("New Node");
+          // play idle animation
+          animation.play("enemy_idle");
+          spawner.getComponent("enemy_1").pooling(this.node, this.enemyHP, 8);
+
+          // Reset the isDying flag
+          this.isDying = false;
+
+          // Restore the original sprite frame
+          this.getComponent(cc.Sprite).spriteFrame = this.originalSpriteFrame;
+
+          // Re-enable the collider for future use
+          this.getComponent(cc.PhysicsCollider).enabled = true;
+        }, state.duration); // Schedule removal after the length of the death animation
       }
     }
   }
